@@ -30,6 +30,8 @@ namespace DiscordBot_Dasbot.Commands
             Console.WriteLine(html);
             HtmlWeb web = new HtmlWeb();
 
+            LoadGuildInfo(guildName, ctx);
+
             var htmlDoc = web.Load(html);
             var nodeTitle = htmlDoc.DocumentNode.SelectSingleNode("//head/title");
 
@@ -119,7 +121,7 @@ namespace DiscordBot_Dasbot.Commands
                 char pad = ' ';
                 string formattedGuildTotPower = string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", guildTotalPower);
 
-                var embed = new DiscordEmbedBuilder
+                var embedGuildInfo = new DiscordEmbedBuilder
                 {
                     Title = guildName + " | " + formattedGuildTotPower + " total guild power",
                     Description = "`Rank " + powerIndex[0] + "  | " + powerName[0].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[0]) + "`" + System.Environment.NewLine +
@@ -154,7 +156,7 @@ namespace DiscordBot_Dasbot.Commands
                     "`Rank " + powerIndex[29] + " | " + powerName[29].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[29]) + "`" + System.Environment.NewLine,
                 };
 
-                await ctx.Channel.SendMessageAsync(embed);
+                await ctx.Channel.SendMessageAsync(embedGuildInfo);
                 powerIndex = new float[30];
                 powerName = new String[30];
                 powerPower = new double[30];
@@ -163,24 +165,26 @@ namespace DiscordBot_Dasbot.Commands
             }
             else
             {
-                var embed = new DiscordEmbedBuilder
+                var embedError = new DiscordEmbedBuilder
                 {
                     Title = "Something went wrong",
                     Description = "Double check you used the correct guildtag, it's CaSe-SeNsItIvE.\n If you used the correct guildtag, contact Dasbomber#7777 with details."
                 };
 
-                await ctx.Channel.SendMessageAsync(embed);
-                //DiscordMessage msg = await ctx.Channel.SendMessageAsync(embed);
-                //await Task.Delay(10000); // If you want to auto-delete a message after x seconds.
-                //await ctx.Channel.DeleteMessageAsync(msg);
+                await ctx.Channel.SendMessageAsync(embedError);
             }
         }
-    }
+        public async void LoadGuildInfo(string guildName, CommandContext ctx)
+        {
+            var embedLoadingGuildInfo = new DiscordEmbedBuilder
+            {
+                Title = "Loading " + guildName + " members. Wait a few seconds."
+            };
 
-    public sealed class DiscordEmbed
-    {
-        public string Title { get; }
-        public string Description { get; }
-        public IReadOnlyList<DiscordEmbedField> Fields { get; }
+            DiscordMessage msg = await ctx.Channel.SendMessageAsync(embedLoadingGuildInfo);
+            await Task.Delay(8000);
+            await ctx.Channel.DeleteMessageAsync(msg);
+
+        }
     }
 }
