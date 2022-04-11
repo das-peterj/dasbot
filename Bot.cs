@@ -55,6 +55,7 @@ namespace DiscordBot_Dasbot
             Commands = Client.UseCommandsNext(commandsConfig);
 
             Commands.RegisterCommands<FunCommands>();
+            Commands.RegisterCommands<WebScraperCommands>();
 
             await Client.ConnectAsync();
 
