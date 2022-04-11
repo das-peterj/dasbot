@@ -1,5 +1,6 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
+using HtmlAgilityPack;
 using System;
 using System.Threading.Tasks;
 
@@ -7,6 +8,81 @@ namespace DiscordBot_Dasbot.Commands
 {
     public class FunCommands : BaseCommandModule
     {
+        private string[] powerIndex;
+        private string[] powerName;
+        private int[] powerPower;
+
+        [Command("webtest")]
+        public async Task WebTest(CommandContext ctx, string url)
+        {
+            var html = @url;
+
+            HtmlWeb web = new HtmlWeb();
+
+            var htmlDoc = web.Load(html);
+            var nodeTitle = htmlDoc.DocumentNode.SelectSingleNode("//head/title");
+
+            //var id = "example_wrapper";
+            //var query = $"//body/div[@id='{id}']";
+            var nodePowerName = htmlDoc.DocumentNode.SelectSingleNode("//*[@id='example']");
+            int indexId = 0;
+            int indexName = 0;
+            int indexPower = 0;
+
+            //string test = "12345678";
+            //Console.WriteLine("test: " + test.Length);
+
+            foreach (HtmlNode row in nodePowerName.SelectNodes("//tr"))
+            {
+                //Console.WriteLine("New Row");
+
+                foreach (HtmlNode cell in row.SelectNodes("//td"))
+                {
+                    // TODO: First cell.innertext shows length of 53, supposed to be either 1 or 2.
+                    // possible it shows 53 because of the first 3 rows have emojis instead of numbers?
+                    Console.WriteLine("test" + cell.InnerText.Length);
+
+                    if (cell.InnerText.Length <= 2)
+                    {
+                        Console.WriteLine("id: " + cell.InnerText);
+                        powerIndex[indexId] = cell.InnerText;
+                        indexId += 1;
+                        //await ctx.Channel.SendMessageAsync("cell: " + cell.InnerText);
+                    }
+                    if (cell.InnerText.Length >= 3)
+                    {
+                        Console.WriteLine("name: " + cell.InnerText);
+                        powerName[indexName] = cell.InnerText;
+                        indexName += 1;
+                    }
+                    if (cell.InnerText.Length >= 7)
+                    {
+                        Console.WriteLine("power: " + cell.InnerText);
+                        powerPower[indexPower] = Int32.Parse(cell.InnerText);
+                        indexPower += 1;
+                    } else
+                    {
+                        Console.WriteLine("Something went wrong here.");
+                    }
+                }
+            }
+
+            Console.WriteLine("");
+            Console.WriteLine("");
+            Console.WriteLine("");
+            Console.WriteLine("");
+
+            //for (int i = 0; i < powerIndex.Length; i++)
+            //{
+            //    Console.WriteLine("id: " + powerIndex[i] + " | name: " + powerName[i] + " | power: " + powerPower[i]);
+            //}
+
+
+            //Console.WriteLine("Node Name: " + nodeTitle.Name + "\n" + nodeTitle.OuterHtml);
+            await ctx.Channel.SendMessageAsync("Node Name: " + nodeTitle.Name + "\n" + nodeTitle.OuterHtml + "\n" + "\n" + "\n");
+            //await ctx.Channel.SendMessageAsync(nodePowerName);
+        }
+
         [Command("ping")]
         [Description("Sends a pong back to the user along with the user's username. \n" +
             "This helps to identify whetever the bot's online and running.")]
