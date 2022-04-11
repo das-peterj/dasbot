@@ -8,7 +8,7 @@ namespace DiscordBot_Dasbot.Commands
 {
     public class WebScraperCommands : BaseCommandModule
     {
-        private string[] powerIndex = new String[30];
+        private int[] powerIndex = new int[30];
         private string[] powerName = new String[30];
         private int[] powerPower = new int[30];
 
@@ -16,7 +16,7 @@ namespace DiscordBot_Dasbot.Commands
         private int indexName = 0;
         private int indexPower = 0;
 
-        int rankId = 1;
+        private int rankId = 1;
 
         //private bool hasCheckedCell = false;
 
@@ -36,11 +36,13 @@ namespace DiscordBot_Dasbot.Commands
 
             //string test = "12345678";
             //Console.WriteLine("test: " + test.Length);
+            int count = 0;
+            int countIndex = 0;
+            int countId = 0;
 
             foreach (HtmlNode row in nodePowerName.SelectNodes("//tbody/tr"))
             {
                 //Console.WriteLine("New Row");
-
                 foreach (HtmlNode cell in row.SelectNodes("//td"))
                 {
                     // TODO: First cell.innertext shows length of 53, supposed to be either 1 or 2.
@@ -62,22 +64,56 @@ namespace DiscordBot_Dasbot.Commands
                         input = "" + rankId;
                         rankId++;
                     }
-                    await ctx.Channel.SendMessageAsync(input);
+
+                    if (count <= 3)
+                    {
+                        if (countIndex == 0)
+                        {
+                            powerIndex[countId] = int.Parse(input);
+                            Console.Write(powerIndex[countId]);
+                            countIndex++;
+                        }
+                        else if (countIndex == 1)
+                        {
+                            powerName[countId] = input;
+                            Console.Write(powerName[countId]);
+                            countIndex++;
+                        }
+                        else if (countIndex == 2)
+                        {
+                            powerPower[countId] = int.Parse(input);
+                            Console.Write(powerPower[countId]);
+                            countIndex++;
+                        }
+                        if (countId > 31) { break; }
+                        count++;
+                        //Console.WriteLine("countId" + countId);
+                        if (count == 3)
+                        {
+                            if (countId < 30)
+                            {
+                                count = 0;
+                                countIndex = 0;
+                                countId++;
+                            }
+                        }
+                    }
                 }
+                break;
             }
 
-            Console.WriteLine("");
-            Console.WriteLine("");
-            Console.WriteLine("");
-            Console.WriteLine("");
-
+            Console.WriteLine("tjatjatja");
+            for (int i = 0; i < powerIndex.Length; i++)
+            {
+                await ctx.Channel.SendMessageAsync("Rank " + powerIndex[i] + " | " + powerName[i] + " | Power: " + powerPower[i]);
+            }
             //for (int i = 0; i < powerIndex.Length; i++)
             //{
             //    Console.WriteLine("id: " + powerIndex[i] + " | name: " + powerName[i] + " | power: " + powerPower[i]);
             //}
 
             //Console.WriteLine("Node Name: " + nodeTitle.Name + "\n" + nodeTitle.OuterHtml);
-            await ctx.Channel.SendMessageAsync("Node Name: " + nodeTitle.Name + "\n" + nodeTitle.OuterHtml + "\n" + "\n" + "\n");
+            //await ctx.Channel.SendMessageAsync("Node Name: " + nodeTitle.Name + "\n" + nodeTitle.OuterHtml + "\n" + "\n" + "\n");
             //await ctx.Channel.SendMessageAsync(nodePowerName);
         }
     }
