@@ -20,11 +20,11 @@ namespace DiscordBot_Dasbot.Commands
 
         //private bool hasCheckedCell = false;
 
-        [Command("webtest")]
-        public async Task WebTest(CommandContext ctx, string url)
+        [Command("gp")]
+        public async Task CheckGuildPower(CommandContext ctx, string guildName)
         {
-            var html = @url;
-
+            var html = @"http://15650.gzidlerpg.appspot.com/web/scores?tid=220110001&guildTag=" + guildName;
+            Console.WriteLine(html);
             HtmlWeb web = new HtmlWeb();
 
             var htmlDoc = web.Load(html);
