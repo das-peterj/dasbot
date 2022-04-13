@@ -1,6 +1,7 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using HtmlAgilityPack;
+using QuickChart;
 using System;
 using System.Threading.Tasks;
 
@@ -8,6 +9,36 @@ namespace DiscordBot_Dasbot.Commands
 {
     public class FunCommands : BaseCommandModule
     {
+        [Command("test")]
+        public async Task Test(CommandContext ctx)
+        {
+            Chart qc = new Chart();
+
+            qc.Width = 500;
+            qc.Height = 300;
+            qc.Config = @"{
+						  type: 'bar',
+						  options: {
+						    plugins: {
+						      googleSheets: {
+						        // Learn more: https://quickchart.io/documentation/integrations/google-sheets/
+						        sheetUrl: 'https://docs.google.com/spreadsheets/d/121DpBzwABbNB7JO3--dXGTI3CE2LL1WwPHXKCYDdsKM/edit#gid=0',
+						        labelColumn: 'Name',
+						        dataColumns: ['Usage count', 'Payment'],
+						      }
+						    },
+						    legend: {
+						      display: false
+						    }
+						  }
+						}";
+
+            // Get the URL
+            Console.WriteLine(qc.GetUrl());
+            await ctx.Channel.SendMessageAsync(qc.GetUrl());
+        }
+
+
         [Command("ping")]
         [Description("Sends a pong back to the user along with the user's username. \n" +
             "This helps to identify whetever the bot's online and running.")]

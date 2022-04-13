@@ -2,9 +2,17 @@
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using HtmlAgilityPack;
+using QuickChart;
 using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.Threading.Tasks;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Sheets.v4;
+using Google.Apis.Sheets.v4.Data;
+using Google.Apis.Services;
+using GoogleSheetsHelper;
 
 namespace DiscordBot_Dasbot.Commands
 {
@@ -32,6 +40,33 @@ namespace DiscordBot_Dasbot.Commands
         private bool hasRanCheckForGuildOne = false;
 
         #endregion gpcpr variables
+
+        [Command("testSheets")]
+        public async Task TestSheets(CommandContext ctx)
+        {
+
+            var gsh = new GoogleSheetsHelper.GoogleSheetsHelper("discorddasbot-969affff0feb.json", "1dn3R45adg6wwxASBXBvKT5ZEylvSfQgBbk7V4IS8Zto");
+
+            var row1 = new GoogleSheetRow();
+            var row2 = new GoogleSheetRow();
+
+            var cell1 = new GoogleSheetCell() { CellValue = "Header 1"};
+            var cell2 = new GoogleSheetCell() { CellValue = "Header 2"};
+
+            var cell3 = new GoogleSheetCell() { CellValue = "Value 1" };
+            var cell4 = new GoogleSheetCell() { CellValue = "Value 2" };
+
+            row1.Cells.AddRange(new List<GoogleSheetCell>() { cell1, cell2 });
+            row2.Cells.AddRange(new List<GoogleSheetCell>() { cell3, cell4 });
+
+            var rows = new List<GoogleSheetRow>() { row1, row2 };
+
+            gsh.AddCells(new GoogleSheetParameters() { SheetName = "Sheet44", RangeColumnStart = 1, RangeRowStart = 1 }, rows);
+
+
+            await ctx.Channel.SendMessageAsync("test");
+        }
+
 
         [Command("gpcpr")]
         public async Task CheckGuildsPower(CommandContext ctx, string guildOne, string guildTwo)
@@ -118,6 +153,54 @@ namespace DiscordBot_Dasbot.Commands
             amountOfHtmlCharactersGuildTwo = 0;
             powerGuildOnePower = new double[30];
             powerGuildTwoPower = new double[30];
+
+
+            // TODO: Implement chart functionality. Display a chart showing each member's power from both guilds.
+
+            var gsh = new GoogleSheetsHelper.GoogleSheetsHelper("security-details.json", "1dn3R45adg6wwxASBXBvKT5ZEylvSfQgBbk7V4IS8Zto");
+
+            var row1 = new GoogleSheetRow();
+            var row2 = new GoogleSheetRow();
+
+            var cell1 = new GoogleSheetCell() { CellValue = "Header 1", IsBold = true, BackgroundColor = System.Drawing.Color.DarkGoldenrod };
+            var cell2 = new GoogleSheetCell() { CellValue = "Header 2", BackgroundColor = System.Drawing.Color.Cyan };
+
+            var cell3 = new GoogleSheetCell() { CellValue = "Value 1" };
+            var cell4 = new GoogleSheetCell() { CellValue = "Value 2" };
+
+            row1.Cells.AddRange(new List<GoogleSheetCell>() { cell1, cell2 });
+            row2.Cells.AddRange(new List<GoogleSheetCell>() { cell3, cell4 });
+
+            var rows = new List<GoogleSheetRow>() { row1, row2 };
+
+            gsh.AddCells(new GoogleSheetParameters() { SheetName = "Sheet44", RangeColumnStart = 1, RangeRowStart = 1 }, rows);
+
+
+
+            Chart qc = new Chart();
+
+            qc.Width = 500;
+            qc.Height = 300;
+            qc.Config = @"{
+						  type: 'bar',
+						  options: {
+						    plugins: {
+						      googleSheets: {
+						        // Learn more: https://quickchart.io/documentation/integrations/google-sheets/
+						        sheetUrl: 'https://docs.google.com/spreadsheets/d/121DpBzwABbNB7JO3--dXGTI3CE2LL1WwPHXKCYDdsKM/edit#gid=0',
+						        labelColumn: 'Name',
+						        dataColumns: ['Usage count', 'Payment'],
+						      }
+						    },
+						    legend: {
+						      display: false
+						    }
+						  }
+						}";
+
+            // Get the URL
+            Console.WriteLine(qc.GetUrl());
+            await ctx.Channel.SendMessageAsync(qc.GetUrl());
         }
 
         [Command("gp")]
