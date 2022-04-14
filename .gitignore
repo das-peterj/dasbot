@@ -7,4 +7,5 @@ artifacts/
 .dotnet/
 *.binlog
 
-DiscordBotTutorial.Bots/config.json
+bin\x64\Test\netcoreapp3.1\config.json
+discorddasbot-969affff0feb.json
