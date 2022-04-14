@@ -4,6 +4,9 @@ using DSharpPlus.Entities;
 using HtmlAgilityPack;
 using QuickChart;
 using System;
+using System.IO;
+using System.Net;
+using System.Text;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
@@ -67,8 +70,8 @@ namespace DiscordBot_Dasbot.Commands
             await ctx.Channel.SendMessageAsync("test");
         }
 
-
-        [Command("gpcpr")]
+        // TODO: CHANGE BACK COMMANDNAME BEFORE PUSHING TO HOST
+        [Command("gpcprtest")]
         public async Task CheckGuildsPower(CommandContext ctx, string guildOne, string guildTwo)
         {
             await GatherGuildInfoForComparisionAsync(ctx, guildOne, powerGuildOnePower, amountOfHtmlCharactersGuildOne);
@@ -145,62 +148,223 @@ namespace DiscordBot_Dasbot.Commands
                 "`" + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerGuildTwoPower[29]).PadRight(5, pad) + " ".PadRight(5, pad) + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerGuildOnePower[29]) + "` | " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", (powerGuildTwoPower[29] - powerGuildOnePower[29])) + Environment.NewLine +
                 Environment.NewLine + guildTwo + ": " + formattedGuildTwoTotPower + " 🏆 | " + guildOne + ": " + formattedGuildOneTotPower + " 🏆" + Environment.NewLine +
                 "Total guild power difference: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", (guildTwoTotalPower - guildOneTotalPower)) + Environment.NewLine +
-                theStrongerGuild + " is " + formattedGuildPowerDifference + " stronger than " + theWeakerGuild
+                theStrongerGuild + " has " + formattedGuildPowerDifference + " more 🏆 than " + theWeakerGuild
             };
 
             await ctx.Channel.SendMessageAsync(embedGuildsComparision);
             amountOfHtmlCharactersGuildOne = 0;
             amountOfHtmlCharactersGuildTwo = 0;
-            powerGuildOnePower = new double[30];
-            powerGuildTwoPower = new double[30];
 
 
             // TODO: Implement chart functionality. Display a chart showing each member's power from both guilds.
 
-            var gsh = new GoogleSheetsHelper.GoogleSheetsHelper("security-details.json", "1dn3R45adg6wwxASBXBvKT5ZEylvSfQgBbk7V4IS8Zto");
-
+            var gsh = new GoogleSheetsHelper.GoogleSheetsHelper("discorddasbot-969affff0feb.json", "1dn3R45adg6wwxASBXBvKT5ZEylvSfQgBbk7V4IS8Zto");
+            #region LongList
             var row1 = new GoogleSheetRow();
             var row2 = new GoogleSheetRow();
+            var row3 = new GoogleSheetRow();
+            var row4 = new GoogleSheetRow();
+            var row5 = new GoogleSheetRow();
+            var row6 = new GoogleSheetRow();
+            var row7 = new GoogleSheetRow();
+            var row8 = new GoogleSheetRow();
+            var row9 = new GoogleSheetRow();
+            var row10 = new GoogleSheetRow();
+            var row11 = new GoogleSheetRow();
+            var row12 = new GoogleSheetRow();
+            var row13 = new GoogleSheetRow();
+            var row14 = new GoogleSheetRow();
+            var row15 = new GoogleSheetRow();
+            var row16 = new GoogleSheetRow();
+            var row17 = new GoogleSheetRow();
+            var row18 = new GoogleSheetRow();
+            var row19 = new GoogleSheetRow();
+            var row20 = new GoogleSheetRow();
+            var row21 = new GoogleSheetRow();
+            var row22 = new GoogleSheetRow();
+            var row23 = new GoogleSheetRow();
+            var row24 = new GoogleSheetRow();
+            var row25 = new GoogleSheetRow();
+            var row26 = new GoogleSheetRow();
+            var row27 = new GoogleSheetRow();
+            var row28 = new GoogleSheetRow();
+            var row29 = new GoogleSheetRow();
+            var row30 = new GoogleSheetRow();
+            var row31 = new GoogleSheetRow();
+            var rowLabels = new GoogleSheetRow();
 
-            var cell1 = new GoogleSheetCell() { CellValue = "Header 1", IsBold = true, BackgroundColor = System.Drawing.Color.DarkGoldenrod };
-            var cell2 = new GoogleSheetCell() { CellValue = "Header 2", BackgroundColor = System.Drawing.Color.Cyan };
+            var cellRank = new GoogleSheetCell() { CellValue = "Rank" };
+            var cellRankIndex1 = new GoogleSheetCell() { CellValue = "1" };
+            var cellRankIndex2 = new GoogleSheetCell() { CellValue = "2" };
+            var cellRankIndex3 = new GoogleSheetCell() { CellValue = "3" };
+            var cellRankIndex4 = new GoogleSheetCell() { CellValue = "4" };
+            var cellRankIndex5 = new GoogleSheetCell() { CellValue = "5" };
+            var cellRankIndex6 = new GoogleSheetCell() { CellValue = "6" };
+            var cellRankIndex7 = new GoogleSheetCell() { CellValue = "7" };
+            var cellRankIndex8 = new GoogleSheetCell() { CellValue = "8" };
+            var cellRankIndex9 = new GoogleSheetCell() { CellValue = "9" };
+            var cellRankIndex10 = new GoogleSheetCell() { CellValue = "10" };
+            var cellRankIndex11 = new GoogleSheetCell() { CellValue = "11" };
+            var cellRankIndex12 = new GoogleSheetCell() { CellValue = "12" };
+            var cellRankIndex13 = new GoogleSheetCell() { CellValue = "13" };
+            var cellRankIndex14 = new GoogleSheetCell() { CellValue = "14" };
+            var cellRankIndex15 = new GoogleSheetCell() { CellValue = "15" };
+            var cellRankIndex16 = new GoogleSheetCell() { CellValue = "16" };
+            var cellRankIndex17 = new GoogleSheetCell() { CellValue = "17" };
+            var cellRankIndex18 = new GoogleSheetCell() { CellValue = "18" };
+            var cellRankIndex19 = new GoogleSheetCell() { CellValue = "19" };
+            var cellRankIndex20 = new GoogleSheetCell() { CellValue = "20" };
+            var cellRankIndex21 = new GoogleSheetCell() { CellValue = "21" };
+            var cellRankIndex22 = new GoogleSheetCell() { CellValue = "22" };
+            var cellRankIndex23 = new GoogleSheetCell() { CellValue = "23" };
+            var cellRankIndex24 = new GoogleSheetCell() { CellValue = "24" };
+            var cellRankIndex25 = new GoogleSheetCell() { CellValue = "25" };
+            var cellRankIndex26 = new GoogleSheetCell() { CellValue = "26" };
+            var cellRankIndex27 = new GoogleSheetCell() { CellValue = "27" };
+            var cellRankIndex28 = new GoogleSheetCell() { CellValue = "28" };
+            var cellRankIndex29 = new GoogleSheetCell() { CellValue = "29" };
+            var cellRankIndex30 = new GoogleSheetCell() { CellValue = "30" };
 
-            var cell3 = new GoogleSheetCell() { CellValue = "Value 1" };
-            var cell4 = new GoogleSheetCell() { CellValue = "Value 2" };
 
-            row1.Cells.AddRange(new List<GoogleSheetCell>() { cell1, cell2 });
-            row2.Cells.AddRange(new List<GoogleSheetCell>() { cell3, cell4 });
 
-            var rows = new List<GoogleSheetRow>() { row1, row2 };
+            var cell1 = new GoogleSheetCell() { CellValue = guildOne };
+            var cell2 = new GoogleSheetCell() { CellValue = guildTwo };
+
+            var cell3 = new GoogleSheetCell() { CellValue = powerGuildOnePower[0].ToString() };
+            var cell4 = new GoogleSheetCell() { CellValue = powerGuildTwoPower[0].ToString() };
+            var cell5 = new GoogleSheetCell() { CellValue = powerGuildOnePower[1].ToString() };
+            var cell6 = new GoogleSheetCell() { CellValue = powerGuildTwoPower[1].ToString() };
+            var cell7 = new GoogleSheetCell() { CellValue = powerGuildOnePower[2].ToString() };
+            var cell8 = new GoogleSheetCell() { CellValue = powerGuildTwoPower[2].ToString() };
+            var cell9 = new GoogleSheetCell() { CellValue = powerGuildOnePower[3].ToString() };
+            var cell10 = new GoogleSheetCell() { CellValue = powerGuildTwoPower[3].ToString() };
+            var cell11 = new GoogleSheetCell() { CellValue = powerGuildOnePower[4].ToString() };
+            var cell12 = new GoogleSheetCell() { CellValue = powerGuildTwoPower[4].ToString() };
+            var cell13 = new GoogleSheetCell() { CellValue = powerGuildOnePower[5].ToString() };
+            var cell14 = new GoogleSheetCell() { CellValue = powerGuildTwoPower[5].ToString() };
+            var cell15 = new GoogleSheetCell() { CellValue = powerGuildOnePower[6].ToString() };
+            var cell16 = new GoogleSheetCell() { CellValue = powerGuildTwoPower[6].ToString() };
+            var cell17 = new GoogleSheetCell() { CellValue = powerGuildOnePower[7].ToString() };
+            var cell18 = new GoogleSheetCell() { CellValue = powerGuildTwoPower[7].ToString() };
+            var cell19 = new GoogleSheetCell() { CellValue = powerGuildOnePower[8].ToString() };
+            var cell20 = new GoogleSheetCell() { CellValue = powerGuildTwoPower[8].ToString() };
+            var cell21 = new GoogleSheetCell() { CellValue = powerGuildOnePower[9].ToString() };
+            var cell22 = new GoogleSheetCell() { CellValue = powerGuildTwoPower[9].ToString() };
+            var cell23 = new GoogleSheetCell() { CellValue = powerGuildOnePower[10].ToString() };
+            var cell24 = new GoogleSheetCell() { CellValue = powerGuildTwoPower[10].ToString() };
+            var cell25 = new GoogleSheetCell() { CellValue = powerGuildOnePower[11].ToString() };
+            var cell26 = new GoogleSheetCell() { CellValue = powerGuildTwoPower[11].ToString() };
+            var cell27 = new GoogleSheetCell() { CellValue = powerGuildOnePower[12].ToString() };
+            var cell28 = new GoogleSheetCell() { CellValue = powerGuildTwoPower[12].ToString() };
+            var cell29 = new GoogleSheetCell() { CellValue = powerGuildOnePower[13].ToString() };
+            var cell30 = new GoogleSheetCell() { CellValue = powerGuildTwoPower[13].ToString() };
+            var cell31 = new GoogleSheetCell() { CellValue = powerGuildOnePower[14].ToString() };
+            var cell32 = new GoogleSheetCell() { CellValue = powerGuildTwoPower[14].ToString() };
+            var cell33 = new GoogleSheetCell() { CellValue = powerGuildOnePower[15].ToString() };
+            var cell34 = new GoogleSheetCell() { CellValue = powerGuildTwoPower[15].ToString() };
+            var cell35 = new GoogleSheetCell() { CellValue = powerGuildOnePower[16].ToString() };
+            var cell36 = new GoogleSheetCell() { CellValue = powerGuildTwoPower[16].ToString() };
+            var cell37 = new GoogleSheetCell() { CellValue = powerGuildOnePower[17].ToString() };
+            var cell38 = new GoogleSheetCell() { CellValue = powerGuildTwoPower[17].ToString() };
+            var cell39 = new GoogleSheetCell() { CellValue = powerGuildOnePower[18].ToString() };
+            var cell40 = new GoogleSheetCell() { CellValue = powerGuildTwoPower[18].ToString() };
+            var cell41 = new GoogleSheetCell() { CellValue = powerGuildOnePower[19].ToString() };
+            var cell42 = new GoogleSheetCell() { CellValue = powerGuildTwoPower[19].ToString() };
+            var cell43 = new GoogleSheetCell() { CellValue = powerGuildOnePower[20].ToString() };
+            var cell44 = new GoogleSheetCell() { CellValue = powerGuildTwoPower[20].ToString() };
+            var cell45 = new GoogleSheetCell() { CellValue = powerGuildOnePower[21].ToString() };
+            var cell46 = new GoogleSheetCell() { CellValue = powerGuildTwoPower[21].ToString() };
+            var cell47 = new GoogleSheetCell() { CellValue = powerGuildOnePower[22].ToString() };
+            var cell48 = new GoogleSheetCell() { CellValue = powerGuildTwoPower[22].ToString() };
+            var cell49 = new GoogleSheetCell() { CellValue = powerGuildOnePower[23].ToString() };
+            var cell50 = new GoogleSheetCell() { CellValue = powerGuildTwoPower[23].ToString() };
+            var cell51 = new GoogleSheetCell() { CellValue = powerGuildOnePower[24].ToString() };
+            var cell52 = new GoogleSheetCell() { CellValue = powerGuildTwoPower[24].ToString() };
+            var cell53 = new GoogleSheetCell() { CellValue = powerGuildOnePower[25].ToString() };
+            var cell54 = new GoogleSheetCell() { CellValue = powerGuildTwoPower[25].ToString() };
+            var cell55 = new GoogleSheetCell() { CellValue = powerGuildOnePower[26].ToString() };
+            var cell56 = new GoogleSheetCell() { CellValue = powerGuildTwoPower[26].ToString() };
+            var cell57 = new GoogleSheetCell() { CellValue = powerGuildOnePower[27].ToString() };
+            var cell58 = new GoogleSheetCell() { CellValue = powerGuildTwoPower[27].ToString() };
+            var cell59 = new GoogleSheetCell() { CellValue = powerGuildOnePower[28].ToString() };
+            var cell60 = new GoogleSheetCell() { CellValue = powerGuildTwoPower[28].ToString() };
+            var cell61 = new GoogleSheetCell() { CellValue = powerGuildOnePower[29].ToString() };
+            var cell62 = new GoogleSheetCell() { CellValue = powerGuildTwoPower[29].ToString() };
+
+            row1.Cells.AddRange(new List<GoogleSheetCell>() { cellRank, cell1, cell2 });
+            row2.Cells.AddRange(new List<GoogleSheetCell>() { cellRankIndex1, cell3, cell4 });
+            row3.Cells.AddRange(new List<GoogleSheetCell>() { cellRankIndex2, cell5, cell6 });
+            row4.Cells.AddRange(new List<GoogleSheetCell>() { cellRankIndex3, cell7, cell8 });
+            row5.Cells.AddRange(new List<GoogleSheetCell>() { cellRankIndex4, cell9, cell10 });
+            row6.Cells.AddRange(new List<GoogleSheetCell>() { cellRankIndex5, cell11, cell12 });
+            row7.Cells.AddRange(new List<GoogleSheetCell>() { cellRankIndex6, cell13, cell14 });
+            row8.Cells.AddRange(new List<GoogleSheetCell>() { cellRankIndex7, cell15, cell16 });
+            row9.Cells.AddRange(new List<GoogleSheetCell>() { cellRankIndex8, cell17, cell18 });
+            row10.Cells.AddRange(new List<GoogleSheetCell>() { cellRankIndex9, cell19, cell20 });
+            row11.Cells.AddRange(new List<GoogleSheetCell>() { cellRankIndex10, cell21, cell22 });
+            row12.Cells.AddRange(new List<GoogleSheetCell>() { cellRankIndex11, cell23, cell24 });
+            row13.Cells.AddRange(new List<GoogleSheetCell>() { cellRankIndex12, cell25, cell26 });
+            row14.Cells.AddRange(new List<GoogleSheetCell>() { cellRankIndex13, cell27, cell28 });
+            row15.Cells.AddRange(new List<GoogleSheetCell>() { cellRankIndex14, cell29, cell30 });
+            row16.Cells.AddRange(new List<GoogleSheetCell>() { cellRankIndex15, cell31, cell32 });
+            row17.Cells.AddRange(new List<GoogleSheetCell>() { cellRankIndex16, cell33, cell34 });
+            row18.Cells.AddRange(new List<GoogleSheetCell>() { cellRankIndex17, cell35, cell36 });
+            row19.Cells.AddRange(new List<GoogleSheetCell>() { cellRankIndex18, cell37, cell38 });
+            row20.Cells.AddRange(new List<GoogleSheetCell>() { cellRankIndex19, cell39, cell40 });
+            row21.Cells.AddRange(new List<GoogleSheetCell>() { cellRankIndex20, cell41, cell42 });
+            row22.Cells.AddRange(new List<GoogleSheetCell>() { cellRankIndex21, cell43, cell44 });
+            row23.Cells.AddRange(new List<GoogleSheetCell>() { cellRankIndex22, cell45, cell46 });
+            row24.Cells.AddRange(new List<GoogleSheetCell>() { cellRankIndex23, cell47, cell48 });
+            row25.Cells.AddRange(new List<GoogleSheetCell>() { cellRankIndex24, cell49, cell50 });
+            row26.Cells.AddRange(new List<GoogleSheetCell>() { cellRankIndex25, cell51, cell52 });
+            row27.Cells.AddRange(new List<GoogleSheetCell>() { cellRankIndex26, cell53, cell54 });
+            row28.Cells.AddRange(new List<GoogleSheetCell>() { cellRankIndex27, cell55, cell56 });
+            row29.Cells.AddRange(new List<GoogleSheetCell>() { cellRankIndex28, cell57, cell58 });
+            row30.Cells.AddRange(new List<GoogleSheetCell>() { cellRankIndex29, cell59, cell60 });
+            row31.Cells.AddRange(new List<GoogleSheetCell>() { cellRankIndex30, cell61, cell62 });
+
+            var rows = new List<GoogleSheetRow>() { row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11, row12, row13, row14, row15, row16, row17, row18, row19, row20, row21, row22, row23, row24, row25, row26, row27, row28, row29, row30, row31 };
 
             gsh.AddCells(new GoogleSheetParameters() { SheetName = "Sheet44", RangeColumnStart = 1, RangeRowStart = 1 }, rows);
+            #endregion
 
+            powerGuildOnePower = new double[30];
+            powerGuildTwoPower = new double[30];
 
+            var config = @"{
+                  type: 'bar',
+                  options: {
+                    plugins: {
+                      googleSheets: {
+                        sheetUrl: 'https://docs.google.com/spreadsheets/d/1dn3R45adg6wwxASBXBvKT5ZEylvSfQgBbk7V4IS8Zto/edit?usp=sharing',
+                        labelColumn: 'Rank',
+                        dataColumns: ['placeHolder1', 'placeHolder2'],
+                      },
+                    },
+                    legend: {
+                      display: false,
+                    },
+                    title: {
+                      align: 'end',
+                      display: true,
+                      position: 'top',
+                      text: 'placeHolder3 (blue) versus placeHolder4 (orange)',
+                    },
+                  },
+                }";
 
+            var result1 = config.Replace("placeHolder1", guildOne);
+            var result2 = result1.Replace("placeHolder2", guildTwo);
+
+            var result3 = result2.Replace("placeHolder3", guildOne);
+            var result4 = result3.Replace("placeHolder4", guildTwo);
             Chart qc = new Chart();
 
-            qc.Width = 500;
-            qc.Height = 300;
-            qc.Config = @"{
-						  type: 'bar',
-						  options: {
-						    plugins: {
-						      googleSheets: {
-						        // Learn more: https://quickchart.io/documentation/integrations/google-sheets/
-						        sheetUrl: 'https://docs.google.com/spreadsheets/d/121DpBzwABbNB7JO3--dXGTI3CE2LL1WwPHXKCYDdsKM/edit#gid=0',
-						        labelColumn: 'Name',
-						        dataColumns: ['Usage count', 'Payment'],
-						      }
-						    },
-						    legend: {
-						      display: false
-						    }
-						  }
-						}";
+            qc.Width = 750;
+            qc.Height = 500;
+            qc.Config = result4;
 
-            // Get the URL
-            Console.WriteLine(qc.GetUrl());
-            await ctx.Channel.SendMessageAsync(qc.GetUrl());
+            await ctx.Channel.SendMessageAsync(qc.GetShortUrl());
         }
 
         [Command("gp")]
