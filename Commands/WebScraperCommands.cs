@@ -32,11 +32,7 @@ namespace DiscordBot_Dasbot.Commands
 
         #region gpcpr variables
 
-        private float[] powerGuildOneIndex = new float[30];
-        private string[] powerGuildOneName = new String[30];
         private double[] powerGuildOnePower = new double[30];
-        private float[] powerGuildTwoIndex = new float[30];
-        private string[] powerGuildTwoName = new String[30];
         private double[] powerGuildTwoPower = new double[30];
         private int amountOfHtmlCharactersGuildOne = 0;
         private int amountOfHtmlCharactersGuildTwo = 0;
@@ -44,35 +40,12 @@ namespace DiscordBot_Dasbot.Commands
 
         #endregion gpcpr variables
 
-        [Command("testSheets")]
-        public async Task TestSheets(CommandContext ctx)
-        {
 
-            var gsh = new GoogleSheetsHelper.GoogleSheetsHelper("discorddasbot-969affff0feb.json", "1dn3R45adg6wwxASBXBvKT5ZEylvSfQgBbk7V4IS8Zto");
-
-            var row1 = new GoogleSheetRow();
-            var row2 = new GoogleSheetRow();
-
-            var cell1 = new GoogleSheetCell() { CellValue = "Header 1"};
-            var cell2 = new GoogleSheetCell() { CellValue = "Header 2"};
-
-            var cell3 = new GoogleSheetCell() { CellValue = "Value 1" };
-            var cell4 = new GoogleSheetCell() { CellValue = "Value 2" };
-
-            row1.Cells.AddRange(new List<GoogleSheetCell>() { cell1, cell2 });
-            row2.Cells.AddRange(new List<GoogleSheetCell>() { cell3, cell4 });
-
-            var rows = new List<GoogleSheetRow>() { row1, row2 };
-
-            gsh.AddCells(new GoogleSheetParameters() { SheetName = "Sheet44", RangeColumnStart = 1, RangeRowStart = 1 }, rows);
-
-
-            await ctx.Channel.SendMessageAsync("test");
-        }
-
-        // TODO: CHANGE BACK COMMANDNAME BEFORE PUSHING TO HOST
-        [Command("gpcprtest")]
-        public async Task CheckGuildsPower(CommandContext ctx, string guildOne, string guildTwo)
+        [Command("gpcpr")]
+        [Description("Compares two guilds members against eachother and display the power differences in a embed and a chart. Be wary of CaSe-SenSItiVIty.")]
+        public async Task CheckGuildsPower(CommandContext ctx,
+            [Description("Guildtag of the first guild")]string guildOne,
+            [Description("Guildtag of the second guild")] string guildTwo)
         {
             await GatherGuildInfoForComparisionAsync(ctx, guildOne, powerGuildOnePower, amountOfHtmlCharactersGuildOne);
             await GatherGuildInfoForComparisionAsync(ctx, guildTwo, powerGuildTwoPower, amountOfHtmlCharactersGuildTwo);
@@ -368,7 +341,8 @@ namespace DiscordBot_Dasbot.Commands
         }
 
         [Command("gp")]
-        public async Task CheckGuildPower(CommandContext ctx, string guildName)
+        [Description("Gathers the list and powers of one guild. Be wary of CasE-SENsiTiVity.")]
+        public async Task CheckGuildPower(CommandContext ctx, [Description("Guildtag of the guild")] string guildName)
         {
             for (int i = 0; i < powerIndex.Length; i++)
             {
