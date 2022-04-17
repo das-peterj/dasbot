@@ -1,21 +1,13 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
+using GoogleSheetsHelper;
 using HtmlAgilityPack;
 using QuickChart;
 using System;
-using System.IO;
-using System.Net;
-using System.Text;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Globalization;
 using System.Threading.Tasks;
-using Google.Apis.Auth.OAuth2;
-using Google.Apis.Sheets.v4;
-using Google.Apis.Sheets.v4.Data;
-using Google.Apis.Services;
-using GoogleSheetsHelper;
 
 namespace DiscordBot_Dasbot.Commands
 {
@@ -40,11 +32,10 @@ namespace DiscordBot_Dasbot.Commands
 
         #endregion gpcpr variables
 
-
         [Command("gpcpr")]
         [Description("Compares two guilds members against eachother and display the power differences in a embed and a chart. Be wary of CaSe-SenSItiVIty.")]
         public async Task CheckGuildsPower(CommandContext ctx,
-            [Description("Guildtag of the first guild")]string guildOne,
+            [Description("Guildtag of the first guild")] string guildOne,
             [Description("Guildtag of the second guild")] string guildTwo)
         {
             await GatherGuildInfoForComparisionAsync(ctx, guildOne, powerGuildOnePower, amountOfHtmlCharactersGuildOne);
@@ -72,18 +63,18 @@ namespace DiscordBot_Dasbot.Commands
 
             if (guildOneTotalPower >= guildTwoTotalPower)
             {
-                guildPowerDifference = ((guildOneTotalPower/100) / (guildTwoTotalPower / 100)).ToString("##%", ci);
+                guildPowerDifference = ((guildOneTotalPower / 100) / (guildTwoTotalPower / 100)).ToString("##%", ci);
                 theStrongerGuild = guildOne;
                 theWeakerGuild = guildTwo;
             }
-            else if (guildTwoTotalPower > guildOneTotalPower) {
+            else if (guildTwoTotalPower > guildOneTotalPower)
+            {
                 guildPowerDifference = ((guildTwoTotalPower / 100) / (guildOneTotalPower / 100)).ToString("##%", ci);
                 theStrongerGuild = guildTwo;
                 theWeakerGuild = guildOne;
             }
             int indexToRemove = 1;
             string formattedGuildPowerDifference = guildPowerDifference.Substring(indexToRemove);
-
 
             var embedGuildsComparision = new DiscordEmbedBuilder
             {
@@ -128,11 +119,12 @@ namespace DiscordBot_Dasbot.Commands
             amountOfHtmlCharactersGuildOne = 0;
             amountOfHtmlCharactersGuildTwo = 0;
 
-
             // TODO: Implement chart functionality. Display a chart showing each member's power from both guilds.
 
             var gsh = new GoogleSheetsHelper.GoogleSheetsHelper("discorddasbot-969affff0feb.json", "1dn3R45adg6wwxASBXBvKT5ZEylvSfQgBbk7V4IS8Zto");
+
             #region LongList
+
             var row1 = new GoogleSheetRow();
             var row2 = new GoogleSheetRow();
             var row3 = new GoogleSheetRow();
@@ -197,8 +189,6 @@ namespace DiscordBot_Dasbot.Commands
             var cellRankIndex28 = new GoogleSheetCell() { CellValue = "28" };
             var cellRankIndex29 = new GoogleSheetCell() { CellValue = "29" };
             var cellRankIndex30 = new GoogleSheetCell() { CellValue = "30" };
-
-
 
             var cell1 = new GoogleSheetCell() { CellValue = guildOne };
             var cell2 = new GoogleSheetCell() { CellValue = guildTwo };
@@ -299,7 +289,8 @@ namespace DiscordBot_Dasbot.Commands
             var rows = new List<GoogleSheetRow>() { row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11, row12, row13, row14, row15, row16, row17, row18, row19, row20, row21, row22, row23, row24, row25, row26, row27, row28, row29, row30, row31 };
 
             gsh.AddCells(new GoogleSheetParameters() { SheetName = "Sheet44", RangeColumnStart = 1, RangeRowStart = 1 }, rows);
-            #endregion
+
+            #endregion LongList
 
             powerGuildOnePower = new double[30];
             powerGuildTwoPower = new double[30];
@@ -494,7 +485,10 @@ namespace DiscordBot_Dasbot.Commands
                 var embedError = new DiscordEmbedBuilder
                 {
                     Title = "Something went wrong",
-                    Description = "Double check you used the correct guildtag " + guildName + ", it's CaSe-SeNsItIvE.\n If you used the correct guildtag, contact Dasbomber#7777 with details."
+                    Description = "1. Double check you used the correct guildtag: " + guildName + ", it's CaSe-SeNsItIvE.\n" +
+                    "2. Check that the website is online and actually displaying values. Sometimes it doesn't work and displays -1 power for each member.\n" +
+                    "You can check it here http://15650.gzidlerpg.appspot.com/web/scores?tid=228310001 , and enter the 3-character Guild Tag (case sensitive).This error might only occur after GW has ended and should only last for approx 1hr.\n" + "\n" +
+                    "If you've checked the above, contact Dasbomber#7777 with details."
                 };
 
                 await ctx.Channel.SendMessageAsync(embedError);
@@ -598,7 +592,10 @@ namespace DiscordBot_Dasbot.Commands
                 var embedError = new DiscordEmbedBuilder
                 {
                     Title = "Something went wrong",
-                    Description = "Double check you used the correct guildtag: " + guildName + ", it's CaSe-SeNsItIvE.\n If you used the correct guildtag, contact Dasbomber#7777 with details."
+                    Description = "1. Double check you used the correct guildtag: " + guildName + ", it's CaSe-SeNsItIvE.\n" +
+                    "2. Check that the website is online and actually displaying values. Sometimes it doesn't work and displays -1 power for each member.\n" +
+                    "You can check it here http://15650.gzidlerpg.appspot.com/web/scores?tid=228310001 , and enter the 3-character Guild Tag (case sensitive). This error might only occur after GW has ended and should only last for approx 1hr.\n" + "\n" +
+                    "If you've checked the above, contact Dasbomber#7777 with details."
                 };
 
                 await ctx.Channel.SendMessageAsync(embedError);
