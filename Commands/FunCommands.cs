@@ -1,7 +1,7 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
-using HtmlAgilityPack;
-using QuickChart;
+
+//using MahApps.Metro.Converters;
 using System;
 using System.Threading.Tasks;
 
@@ -9,7 +9,6 @@ namespace DiscordBot_Dasbot.Commands
 {
     public class FunCommands : BaseCommandModule
     {
-
         [Command("ping")]
         [Description("Sends a pong back to the user along with the user's username. \n" +
             "This helps to identify whetever the bot's online and running.")]
@@ -41,5 +40,40 @@ namespace DiscordBot_Dasbot.Commands
             await ctx.Channel.SendMessageAsync(prompt[x] + ".")
                 .ConfigureAwait(false);
         }
+
+        /*
+         Not currently working for whatever reason
+        [Command("math")]
+        [Description("Gives the user the option too choose which operation too use and what two operands.")]
+        public async Task Math(CommandContext ctx, [Description("Operation to perform on the operands")] MathOperation operation, [Description("First operand")] double num1, [Description("Second operand")] double num2)
+        {
+            var result = 0.0;
+            switch (operation)
+            {
+                case MathOperation.Add:
+                    result = num1 + num2;
+                    break;
+
+                case MathOperation.Subtract:
+                    result = num1 - num2;
+                    break;
+
+                case MathOperation.Multiply:
+                    result = num1 * num2;
+                    break;
+
+                case MathOperation.Divide:
+                    result = num1 / num2;
+                    break;
+
+                case MathOperation.Modulo:
+                    result = num1 % num2;
+                    break;
+            }
+
+            var emoji = DiscordEmoji.FromName(ctx.Client, ":1234:");
+            await ctx.RespondAsync($"{emoji} The result is {result.ToString("#,##0.00")}");
+        }
+        */
     }
 }

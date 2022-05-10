@@ -1,8 +1,10 @@
-﻿using System;
+﻿using DiscordBot_Dasbot.Core;
+using DSharpPlus.CommandsNext;
+using System;
 
 namespace DiscordBot_Dasbot
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
