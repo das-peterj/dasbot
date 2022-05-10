@@ -1,4 +1,5 @@
 ﻿using DiscordBot_Dasbot.Commands;
+using DiscordBot_Dasbot.Core;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.EventArgs;
@@ -56,6 +57,7 @@ namespace DiscordBot_Dasbot
 
             Commands.RegisterCommands<FunCommands>();
             Commands.RegisterCommands<WebScraperCommands>();
+            Commands.SetHelpFormatter<CustomHelpFormatter>();
 
             await Client.ConnectAsync();
 
