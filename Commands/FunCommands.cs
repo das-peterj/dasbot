@@ -1,5 +1,7 @@
-﻿using DSharpPlus.CommandsNext;
+﻿using DSharpPlus;
+using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
+using DSharpPlus.Entities;
 
 //using MahApps.Metro.Converters;
 using System;
@@ -41,6 +43,18 @@ namespace DiscordBot_Dasbot.Commands
                 .ConfigureAwait(false);
         }
 
+
+        [Command("support")]
+        [Description("Consider donating to help cover the cost of hosting the bot.")]
+        public async Task Support(CommandContext ctx)
+        {
+            var myButton = new DiscordLinkButtonComponent("https://www.paypal.me/dasbomber", "🥰", false);
+            var builder = new DiscordMessageBuilder();
+            builder.WithContent("We appreciate you thinking about supporting us FeelsGoodMan").AddComponents(myButton);
+
+
+            await ctx.Channel.SendMessageAsync(builder);
+        }
         /*
          Not currently working for whatever reason
         [Command("math")]
