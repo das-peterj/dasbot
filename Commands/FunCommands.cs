@@ -5,6 +5,7 @@ using DSharpPlus.Entities;
 
 //using MahApps.Metro.Converters;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DiscordBot_Dasbot.Commands
@@ -54,6 +55,32 @@ namespace DiscordBot_Dasbot.Commands
 
 
             await ctx.Channel.SendMessageAsync(builder);
+        }
+
+        [Command("Dropdown")]
+        [Description("Test command to test dropdown menus")]
+        public async Task Dropdown(CommandContext ctx)
+        {
+
+            var dropdownOptions = new List<DiscordSelectComponentOption>()
+            {
+                new DiscordSelectComponentOption("Dasbomber, The sexiest", "Das is indeed the sexiest out of the bunch"),
+                new DiscordSelectComponentOption("Loitering, The wisest", "Loit is indeed the wisest out of the bunch"),
+                new DiscordSelectComponentOption("Belmont, The oldest", "Bel is indeed the oldest out of the bunch"),
+            };
+
+            var dropdownMenu = new DiscordSelectComponent("dropdownMenu", null, dropdownOptions, false, 1, 1);
+
+            var builder = new DiscordMessageBuilder().WithContent("Look, it's a dropdown menu containing facts.").AddComponents(dropdownMenu);
+            await builder.SendAsync(ctx.Channel);
+
+            ctx.Client.ComponentInteractionCreated += async (s, e) =>
+            {
+                //await e.Interaction.CreateResponseAsync(InteractionResponseType.UpdateMessage,
+                //    new DiscordInteractionResponseBuilder().WithContent("Nämen tjenare"));
+                await e.Interaction.CreateResponseAsync(InteractionResponseType.DeferredMessageUpdate);
+            };
+
         }
         /*
          Not currently working for whatever reason
