@@ -77,9 +77,12 @@ namespace DiscordBot_Dasbot.Commands
         {
             var dropdownOptions = new List<DiscordSelectComponentOption>()
             {
-                new DiscordSelectComponentOption("Dasbomber, The sexiest", "Das is indeed the sexiest out of the bunch"),
-                new DiscordSelectComponentOption("Loitering, The wisest", "Loit is indeed the wisest out of the bunch"),
-                new DiscordSelectComponentOption("Belmont, The oldest", "Bel is indeed the oldest out of the bunch"),
+                new DiscordSelectComponentOption("Dasbomber, The Sexiest", "Das is indeed the sexiest out of the bunch"),
+                new DiscordSelectComponentOption("Loitering, The Wisest", "Loit is indeed the wisest out of the bunch"),
+                new DiscordSelectComponentOption("Belmont, The Oldest", "Bel is indeed the oldest out of the bunch"),
+                new DiscordSelectComponentOption("Fryguy, The Coolest", "Fry is indeed the coolest out of the bunch"),
+                new DiscordSelectComponentOption("Falcon, The Alcohol Expert", "Falcon is indeed the alcohol expert out of the bunch"),
+                new DiscordSelectComponentOption("Basti, The Dumbest", "Basti is indeed the dumbest out of the bunch"),
             };
 
             var dropdownMenu = new DiscordSelectComponent("dropdownMenu", null, dropdownOptions, false, 1, 1);
@@ -99,13 +102,20 @@ namespace DiscordBot_Dasbot.Commands
         [Description("Rolls a dice based off the lower and upper limit chosen by the user")]
         public async Task RollDice(CommandContext ctx, int lowerLimit, int upperLimit)
         {
-            System.Random random = new System.Random();
-            int randomNumber = random.Next(lowerLimit, upperLimit);
+            if (lowerLimit > upperLimit)
+            {
+                await ctx.Channel.SendMessageAsync("Error, lowerlimit of " + lowerLimit + " can't be higher than upperLimit of " + upperLimit);
+            }
+            else
+            {
+                System.Random random = new System.Random();
+                int randomNumber = random.Next(lowerLimit, upperLimit+1); // +1 here because otherwise randomNumber cant ever be equal to upperLimit. Integers n dat
 
-            var inlineReplyMessage = await new DiscordMessageBuilder()
-                .WithContent("Dice has rolled the number " + randomNumber)
-                .WithReply(ctx.Message.Id, true)
-                .SendAsync(ctx.Channel);
+                var inlineReplyMessage = await new DiscordMessageBuilder()
+                    .WithContent("Dice has rolled the number `" + randomNumber + "`. Thanks for playing!")
+                    .WithReply(ctx.Message.Id, true)
+                    .SendAsync(ctx.Channel);
+            }
         }
 
         /*
