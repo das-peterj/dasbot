@@ -38,6 +38,11 @@ namespace DiscordBot_Dasbot.Commands
             [Description("Guildtag of the first guild")] string guildOne,
             [Description("Guildtag of the second guild")] string guildTwo)
         {
+            DateTime foo = DateTime.Now;
+            long unixTime = ((DateTimeOffset)foo).ToUnixTimeSeconds();
+
+            string timeSinceMsgSent = "<t:" + unixTime + ":R>";
+
             await GatherGuildInfoForComparisionAsync(ctx, guildOne, powerGuildOnePower, amountOfHtmlCharactersGuildOne);
             await GatherGuildInfoForComparisionAsync(ctx, guildTwo, powerGuildTwoPower, amountOfHtmlCharactersGuildTwo);
 
@@ -112,7 +117,7 @@ namespace DiscordBot_Dasbot.Commands
                 "`" + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerGuildTwoPower[29]).PadRight(5, pad) + " ".PadRight(5, pad) + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerGuildOnePower[29]) + "` | " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", (powerGuildTwoPower[29] - powerGuildOnePower[29])) + Environment.NewLine +
                 Environment.NewLine + guildTwo + ": " + formattedGuildTwoTotPower + " 🏆 | " + guildOne + ": " + formattedGuildOneTotPower + " 🏆" + Environment.NewLine +
                 "Total guild power difference: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", (guildTwoTotalPower - guildOneTotalPower)) + Environment.NewLine +
-                theStrongerGuild + " has " + formattedGuildPowerDifference + " more 🏆 than " + theWeakerGuild
+                theStrongerGuild + " has " + formattedGuildPowerDifference + " more 🏆 than " + theWeakerGuild + "\n" + timeSinceMsgSent
             };
 
             await ctx.Channel.SendMessageAsync(embedGuildsComparision);
@@ -335,11 +340,16 @@ namespace DiscordBot_Dasbot.Commands
         [Description("Gathers the list and powers of one guild. Be wary of CasE-SENsiTiVity.")]
         public async Task CheckGuildPower(CommandContext ctx, [Description("Guildtag of the guild")] string guildName)
         {
+            DateTime foo = DateTime.Now;
+            long unixTime = ((DateTimeOffset)foo).ToUnixTimeSeconds();
+
+            string timeSinceMsgSent = "<t:" + unixTime + ":R>";
+
             for (int i = 0; i < powerIndex.Length; i++)
             {
-                powerIndex[i] = 80085;
-                powerName[i] = "Member doesn't exist, " + guildName + " aren't 30/30";
-                powerPower[i] = 80085;
+                powerIndex[i] = 8008;
+                powerName[i] = "N/A";
+                powerPower[i] = 8008;
             }
 
             var html = @"http://15650.gzidlerpg.appspot.com/web/scores?tid=220110001&guildTag=" + guildName;
@@ -441,36 +451,37 @@ namespace DiscordBot_Dasbot.Commands
                 {
                     Title = guildName + " | " + formattedGuildTotPower + " total guild power",
                     Description =
-                    powerIndex[0] + "  | " + powerName[0].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[0]) + "`" + System.Environment.NewLine +
-                    powerIndex[1] + "  | " + powerName[1].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[1]) + "`" + System.Environment.NewLine +
-                    powerIndex[2] + "  | " + powerName[2].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[2]) + "`" + System.Environment.NewLine +
-                    powerIndex[3] + "  | " + powerName[3].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[3]) + "`" + System.Environment.NewLine +
-                    powerIndex[4] + "  | " + powerName[4].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[4]) + "`" + System.Environment.NewLine +
-                    powerIndex[5] + "  | " + powerName[5].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[5]) + "`" + System.Environment.NewLine +
-                    powerIndex[6] + "  | " + powerName[6].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[6]) + "`" + System.Environment.NewLine +
-                    powerIndex[7] + "  | " + powerName[7].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[7]) + "`" + System.Environment.NewLine +
-                    powerIndex[8] + "  | " + powerName[8].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[8]) + "`" + System.Environment.NewLine +
-                    powerIndex[9] + "  | " + powerName[9].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[9]) + "`" + System.Environment.NewLine +
-                    powerIndex[10] + " | " + powerName[10].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[10]) + "`" + System.Environment.NewLine +
-                    powerIndex[11] + " | " + powerName[11].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[11]) + "`" + System.Environment.NewLine +
-                    powerIndex[12] + " | " + powerName[12].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[12]) + "`" + System.Environment.NewLine +
-                    powerIndex[13] + " | " + powerName[13].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[13]) + "`" + System.Environment.NewLine +
-                    powerIndex[14] + " | " + powerName[14].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[14]) + "`" + System.Environment.NewLine +
-                    powerIndex[15] + " | " + powerName[15].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[15]) + "`" + System.Environment.NewLine +
-                    powerIndex[16] + " | " + powerName[16].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[16]) + "`" + System.Environment.NewLine +
-                    powerIndex[17] + " | " + powerName[17].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[17]) + "`" + System.Environment.NewLine +
-                    powerIndex[18] + " | " + powerName[18].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[18]) + "`" + System.Environment.NewLine +
-                    powerIndex[19] + " | " + powerName[19].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[19]) + "`" + System.Environment.NewLine +
-                    powerIndex[20] + " | " + powerName[20].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[20]) + "`" + System.Environment.NewLine +
-                    powerIndex[21] + " | " + powerName[21].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[21]) + "`" + System.Environment.NewLine +
-                    powerIndex[22] + " | " + powerName[22].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[22]) + "`" + System.Environment.NewLine +
-                    powerIndex[23] + " | " + powerName[23].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[23]) + "`" + System.Environment.NewLine +
-                    powerIndex[24] + " | " + powerName[24].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[24]) + "`" + System.Environment.NewLine +
-                    powerIndex[25] + " | " + powerName[25].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[25]) + "`" + System.Environment.NewLine +
-                    powerIndex[26] + " | " + powerName[26].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[26]) + "`" + System.Environment.NewLine +
-                    powerIndex[27] + " | " + powerName[27].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[27]) + "`" + System.Environment.NewLine +
-                    powerIndex[28] + " | " + powerName[28].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[28]) + "`" + System.Environment.NewLine +
-                    powerIndex[29] + " | " + powerName[29].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[29]) + "`" + System.Environment.NewLine,
+                    "`" + powerIndex[0] + "  | " + powerName[0].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[0]) + "`" + System.Environment.NewLine +
+                    "`" + powerIndex[1] + "  | " + powerName[1].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[1]) + "`" + System.Environment.NewLine +
+                    "`" + powerIndex[2] + "  | " + powerName[2].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[2]) + "`" + System.Environment.NewLine +
+                    "`" + powerIndex[3] + "  | " + powerName[3].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[3]) + "`" + System.Environment.NewLine +
+                    "`" + powerIndex[4] + "  | " + powerName[4].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[4]) + "`" + System.Environment.NewLine +
+                    "`" + powerIndex[5] + "  | " + powerName[5].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[5]) + "`" + System.Environment.NewLine +
+                    "`" + powerIndex[6] + "  | " + powerName[6].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[6]) + "`" + System.Environment.NewLine +
+                    "`" + powerIndex[7] + "  | " + powerName[7].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[7]) + "`" + System.Environment.NewLine +
+                    "`" + powerIndex[8] + "  | " + powerName[8].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[8]) + "`" + System.Environment.NewLine +
+                    "`" + powerIndex[9] + "  | " + powerName[9].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[9]) + "`" + System.Environment.NewLine +
+                    "`" + powerIndex[10] + " | " + powerName[10].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[10]) + "`" + System.Environment.NewLine +
+                    "`" + powerIndex[11] + " | " + powerName[11].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[11]) + "`" + System.Environment.NewLine +
+                    "`" + powerIndex[12] + " | " + powerName[12].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[12]) + "`" + System.Environment.NewLine +
+                    "`" + powerIndex[13] + " | " + powerName[13].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[13]) + "`" + System.Environment.NewLine +
+                    "`" + powerIndex[14] + " | " + powerName[14].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[14]) + "`" + System.Environment.NewLine +
+                    "`" + powerIndex[15] + " | " + powerName[15].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[15]) + "`" + System.Environment.NewLine +
+                    "`" + powerIndex[16] + " | " + powerName[16].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[16]) + "`" + System.Environment.NewLine +
+                    "`" + powerIndex[17] + " | " + powerName[17].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[17]) + "`" + System.Environment.NewLine +
+                    "`" + powerIndex[18] + " | " + powerName[18].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[18]) + "`" + System.Environment.NewLine +
+                    "`" + powerIndex[19] + " | " + powerName[19].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[19]) + "`" + System.Environment.NewLine +
+                    "`" + powerIndex[20] + " | " + powerName[20].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[20]) + "`" + System.Environment.NewLine +
+                    "`" + powerIndex[21] + " | " + powerName[21].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[21]) + "`" + System.Environment.NewLine +
+                    "`" + powerIndex[22] + " | " + powerName[22].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[22]) + "`" + System.Environment.NewLine +
+                    "`" + powerIndex[23] + " | " + powerName[23].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[23]) + "`" + System.Environment.NewLine +
+                    "`" + powerIndex[24] + " | " + powerName[24].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[24]) + "`" + System.Environment.NewLine +
+                    "`" + powerIndex[25] + " | " + powerName[25].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[25]) + "`" + System.Environment.NewLine +
+                    "`" + powerIndex[26] + " | " + powerName[26].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[26]) + "`" + System.Environment.NewLine +
+                    "`" + powerIndex[27] + " | " + powerName[27].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[27]) + "`" + System.Environment.NewLine +
+                    "`" + powerIndex[28] + " | " + powerName[28].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[28]) + "`" + System.Environment.NewLine +
+                    "`" + powerIndex[29] + " | " + powerName[29].PadRight(20, pad) + " | Power: " + string.Format(System.Globalization.CultureInfo.GetCultureInfo("EN-US"), "{0:0,0}", powerPower[29]) + "`" + System.Environment.NewLine +
+                    "\n" + timeSinceMsgSent
                 };
 
                 await ctx.Channel.SendMessageAsync(embedGuildInfo);

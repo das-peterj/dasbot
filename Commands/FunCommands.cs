@@ -17,11 +17,16 @@ namespace DiscordBot_Dasbot.Commands
             "This helps to identify whetever the bot's online and running.")]
         public async Task Ping(CommandContext ctx)
         {
-            var user = ctx.Member.Username;
+            //var user = ctx.Member.Username;
             //await ctx.Channel.SendMessageAsync("Pong! " + user + " your ping is ").ConfigureAwait(false);
 
+            DateTime foo = DateTime.Now;
+            long unixTime = ((DateTimeOffset)foo).ToUnixTimeSeconds();
+
+            string timeSinceMsgSent = "<t:" + unixTime + ":R>";
+
             var inlineReplyMessage = await new DiscordMessageBuilder()
-            .WithContent("Pong! " + ctx.Client.Ping + "ms")
+            .WithContent("Pong! " + ctx.Client.Ping + "ms" + "\n" + timeSinceMsgSent)
             .WithReply(ctx.Message.Id, true)
             .SendAsync(ctx.Channel);
         }
@@ -64,9 +69,14 @@ namespace DiscordBot_Dasbot.Commands
         [Description("Consider donating to help cover the cost of hosting the bot.")]
         public async Task Support(CommandContext ctx)
         {
+            DateTime foo = DateTime.Now;
+            long unixTime = ((DateTimeOffset)foo).ToUnixTimeSeconds();
+
+            string timeSinceMsgSent = "<t:" + unixTime + ":R>";
+
             var myButton = new DiscordLinkButtonComponent("https://www.paypal.me/dasbomber", "🥰", false);
             var builder = new DiscordMessageBuilder();
-            builder.WithContent("We appreciate you thinking about supporting us FeelsGoodMan").AddComponents(myButton);
+            builder.WithContent("We appreciate you thinking about supporting us FeelsGoodMan\n" + timeSinceMsgSent).AddComponents(myButton);
 
             await ctx.Channel.SendMessageAsync(builder);
         }
@@ -83,6 +93,7 @@ namespace DiscordBot_Dasbot.Commands
                 new DiscordSelectComponentOption("Fryguy, The Coolest", "Fry is indeed the coolest out of the bunch"),
                 new DiscordSelectComponentOption("Falcon, The Alcohol Expert", "Falcon is indeed the alcohol expert out of the bunch"),
                 new DiscordSelectComponentOption("Basti, The Dumbest", "Basti is indeed the dumbest out of the bunch"),
+                new DiscordSelectComponentOption("Laquarix, The Cutest", "Laq is indeed the cutest out of the bunch"),
             };
 
             var dropdownMenu = new DiscordSelectComponent("dropdownMenu", null, dropdownOptions, false, 1, 1);
