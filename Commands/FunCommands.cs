@@ -18,7 +18,12 @@ namespace DiscordBot_Dasbot.Commands
         public async Task Ping(CommandContext ctx)
         {
             var user = ctx.Member.Username;
-            await ctx.Channel.SendMessageAsync("Pong! " + user).ConfigureAwait(false);
+            //await ctx.Channel.SendMessageAsync("Pong! " + user + " your ping is ").ConfigureAwait(false);
+
+            var inlineReplyMessage = await new DiscordMessageBuilder()
+            .WithContent("Pong! " + ctx.Client.Ping + "ms")
+            .WithReply(ctx.Message.Id, true)
+            .SendAsync(ctx.Channel);
         }
 
         [Command("addition")]
@@ -27,9 +32,14 @@ namespace DiscordBot_Dasbot.Commands
             [Description("First integer")] int numberOne,
             [Description("Second integer")] int numberTwo)
         {
-            await ctx.Channel.SendMessageAsync(
-                numberOne + " + " + numberTwo + " = " + (numberOne + numberTwo).ToString())
-                .ConfigureAwait(false);
+            //await ctx.Channel.SendMessageAsync(
+            //    numberOne + " + " + numberTwo + " = " + (numberOne + numberTwo).ToString())
+            //    .ConfigureAwait(false);
+
+            var inlineReplyMessage = await new DiscordMessageBuilder()
+            .WithContent(numberOne + " + " + numberTwo + " = " + (numberOne + numberTwo).ToString())
+            .WithReply(ctx.Message.Id, true)
+            .SendAsync(ctx.Channel);
         }
 
         [Command("8ball")]
@@ -40,10 +50,15 @@ namespace DiscordBot_Dasbot.Commands
             string[] prompt = {"Yes", "No", "Perhaps", "Possibly", "Probably not", "Not likely",
             "Most definitely", "Absolutely", "Dead wrong", "Nah not possible m8", "Absolutely not"};
             int x = rnd.Next(prompt.Length);
-            await ctx.Channel.SendMessageAsync(prompt[x] + ".")
-                .ConfigureAwait(false);
-        }
 
+            //await ctx.Channel.SendMessageAsync(prompt[x] + ".")
+            //    .ConfigureAwait(false);
+
+            var inlineReplyMessage = await new DiscordMessageBuilder()
+                .WithContent(prompt[x] + ".")
+                .WithReply(ctx.Message.Id, true)
+                .SendAsync(ctx.Channel);
+        }
 
         [Command("support")]
         [Description("Consider donating to help cover the cost of hosting the bot.")]
@@ -53,15 +68,13 @@ namespace DiscordBot_Dasbot.Commands
             var builder = new DiscordMessageBuilder();
             builder.WithContent("We appreciate you thinking about supporting us FeelsGoodMan").AddComponents(myButton);
 
-
             await ctx.Channel.SendMessageAsync(builder);
         }
 
-        [Command("Dropdown")]
+        [Command("dropdown")]
         [Description("Test command to test dropdown menus")]
         public async Task Dropdown(CommandContext ctx)
         {
-
             var dropdownOptions = new List<DiscordSelectComponentOption>()
             {
                 new DiscordSelectComponentOption("Dasbomber, The sexiest", "Das is indeed the sexiest out of the bunch"),
@@ -80,8 +93,8 @@ namespace DiscordBot_Dasbot.Commands
                 //    new DiscordInteractionResponseBuilder().WithContent("Nämen tjenare"));
                 await e.Interaction.CreateResponseAsync(InteractionResponseType.DeferredMessageUpdate);
             };
-
         }
+
         /*
          Not currently working for whatever reason
         [Command("math")]
