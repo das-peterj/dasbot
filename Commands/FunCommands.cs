@@ -95,6 +95,19 @@ namespace DiscordBot_Dasbot.Commands
             };
         }
 
+        [Command("dice")]
+        [Description("Rolls a dice based off the lower and upper limit chosen by the user")]
+        public async Task RollDice(CommandContext ctx, int lowerLimit, int upperLimit)
+        {
+            System.Random random = new System.Random();
+            int randomNumber = random.Next(lowerLimit, upperLimit);
+
+            var inlineReplyMessage = await new DiscordMessageBuilder()
+                .WithContent("Dice has rolled the number " + randomNumber)
+                .WithReply(ctx.Message.Id, true)
+                .SendAsync(ctx.Channel);
+        }
+
         /*
          Not currently working for whatever reason
         [Command("math")]
