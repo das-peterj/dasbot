@@ -2,10 +2,14 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
+using DSharpPlus.Interactivity;
+using DSharpPlus.Interactivity.Enums;
+using DSharpPlus.Interactivity.Extensions;
 
 //using MahApps.Metro.Converters;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace DiscordBot_Dasbot.Commands
@@ -87,13 +91,14 @@ namespace DiscordBot_Dasbot.Commands
         {
             var dropdownOptions = new List<DiscordSelectComponentOption>()
             {
-                new DiscordSelectComponentOption("Dasbomber, The Sexiest", "Das is indeed the sexiest out of the bunch"),
-                new DiscordSelectComponentOption("Loitering, The Wisest", "Loit is indeed the wisest out of the bunch"),
-                new DiscordSelectComponentOption("Belmont, The Oldest", "Bel is indeed the oldest out of the bunch"),
-                new DiscordSelectComponentOption("Fryguy, The Coolest", "Fry is indeed the coolest out of the bunch"),
-                new DiscordSelectComponentOption("Falcon, The Alcohol Expert", "Falcon is indeed the alcohol expert out of the bunch"),
-                new DiscordSelectComponentOption("Basti, The Dumbest", "Basti is indeed the dumbest out of the bunch"),
-                new DiscordSelectComponentOption("Laquarix, The Cutest", "Laq is indeed the cutest out of the bunch"),
+                new DiscordSelectComponentOption("Dasbomber, The Sexiest", "1", "Das is indeed the sexiest out of the bunch", true),
+                new DiscordSelectComponentOption("Loitering, The Wisest", "2", "Loit is indeed the wisest out of the bunch"),
+                new DiscordSelectComponentOption("Belmont, The Oldest", "3", "Bel is indeed the oldest out of the bunch"),
+                new DiscordSelectComponentOption("Fryguy, The Coolest", "4", "Fry is indeed the coolest out of the bunch"),
+                new DiscordSelectComponentOption("Falcon, The Alcohol Expert", "5", "Falcon is indeed the alcohol expert out of the bunch"),
+                new DiscordSelectComponentOption("Basti, The Dumbest", "6", "Basti is indeed the dumbest out of the bunch"),
+                new DiscordSelectComponentOption("Laquarix, The Cutest", "7", "Laq is indeed the cutest out of the bunch"),
+                new DiscordSelectComponentOption("KingMadTheSad, The boring one", "8", "King is indeed the most boring one out of the bunch"),
             };
 
             var dropdownMenu = new DiscordSelectComponent("dropdownMenu", null, dropdownOptions, false, 1, 1);
@@ -120,12 +125,74 @@ namespace DiscordBot_Dasbot.Commands
             else
             {
                 System.Random random = new System.Random();
-                int randomNumber = random.Next(lowerLimit, upperLimit+1); // +1 here because otherwise randomNumber cant ever be equal to upperLimit. Integers n dat
+                int randomNumber = random.Next(lowerLimit, upperLimit + 1); // +1 here because otherwise randomNumber cant ever be equal to upperLimit. Integers n dat
 
                 var inlineReplyMessage = await new DiscordMessageBuilder()
                     .WithContent("Dice has rolled the number `" + randomNumber + "`. Thanks for playing!")
                     .WithReply(ctx.Message.Id, true)
                     .SendAsync(ctx.Channel);
+            }
+        }
+
+        private DiscordEmoji[] emojiCache;
+
+        [Command("poll")]
+        [Description("Create a poll for a yes/no question")]
+        [Cooldown(1, 30, CooldownBucketType.Guild)]
+        public async Task PollMaker(CommandContext ctx, [Description("How long should the poll last?")] TimeSpan duration, [Description("Yes/No Question"), RemainingText] string question)
+        {
+            var client = ctx.Client;
+            var clientInteractivity = client.GetInteractivity();
+
+            if (!string.IsNullOrEmpty(question))
+            {
+                if (emojiCache == null)
+                {
+                    Console.Write("\n0\n");
+                    emojiCache = new[]
+                    {
+                        DiscordEmoji.FromName(client, ":ballot_box_with_check:"),
+                        DiscordEmoji.FromName(client, ":x:")
+                    };
+                }
+
+                // Making the poll and adding the user's question onto it
+                var pollQuestion = new StringBuilder();
+                pollQuestion.Append("**").Append("Poll starting for: ").AppendLine("**");
+                pollQuestion.Append(question);
+                Console.WriteLine("\n1\n");
+                var pollStartMsg = await ctx.RespondAsync(pollQuestion.ToString());
+                Console.WriteLine("\n2\n");
+
+                // Collecting the poll results
+                var pollResults = await clientInteractivity.DoPollAsync(pollStartMsg, emojiCache, PollBehaviour.KeepEmojis, duration);
+                Console.WriteLine("\n3\n");
+                var votesYes = pollResults[0].Total;
+                var votesNo = pollResults[1].Total;
+
+                var pollResult = new StringBuilder();
+                pollResult.AppendLine(question);
+                pollResult.Append("Poll results are: ");
+                pollResult.Append("**");
+
+                if (votesYes < votesNo)
+                {
+                    pollResult.Append("NO");
+                }
+                else if (votesYes > votesNo)
+                {
+                    pollResult.Append("YES");
+                }
+                else
+                {
+                    pollResult.Append("Equal votes");
+                }
+                pollResult.Append("**");
+                await ctx.RespondAsync(pollResult.ToString());
+            }
+            else
+            {
+                await ctx.RespondAsync("Error: The question can't be empty, stupid");
             }
         }
 

@@ -4,6 +4,8 @@ using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.EventArgs;
 using DSharpPlus.Interactivity;
+using DSharpPlus.Interactivity.Enums;
+using DSharpPlus.Interactivity.Extensions;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
@@ -17,7 +19,6 @@ namespace DiscordBot_Dasbot
     {
         public DiscordClient Client { get; private set; }
         public CommandsNextExtension Commands { get; private set; }
-
 
         public async Task RunAsync()
         {
@@ -41,6 +42,8 @@ namespace DiscordBot_Dasbot
 
             Client = new DiscordClient(config);
 
+            Client.UseInteractivity(new InteractivityConfiguration());
+
             Client.Ready += OnClientReady;
 
             var commandsConfig = new CommandsNextConfiguration
@@ -51,7 +54,6 @@ namespace DiscordBot_Dasbot
                 DmHelp = false,
                 IgnoreExtraArguments = true
             };
-
 
             Commands = Client.UseCommandsNext(commandsConfig);
 

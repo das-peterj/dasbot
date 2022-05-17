@@ -27,7 +27,8 @@ namespace DiscordBot_Dasbot.Core
         {
             DateTime date = DateTime.Now;
 
-            embed = new DiscordEmbedBuilder().WithFooter("Support me at https://www.paypal.me/dasbomber" + "\n" + date + "\n" + "Made by Peter Jörgensen").WithUrl("https://www.paypal.me/dasbomber");
+            embed = new DiscordEmbedBuilder().WithFooter("Support me at https://www.paypal.me/dasbomber" + "\n" + date + "\n" + "Made by Peter Jörgensen")
+                .WithUrl("https://www.paypal.me/dasbomber");
             strBuilder = new StringBuilder();
             var channel = ctx.Channel;
             context = ctx;
