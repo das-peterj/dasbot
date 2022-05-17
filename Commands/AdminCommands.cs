@@ -12,7 +12,7 @@ namespace DiscordBot_Dasbot.Commands
     class AdminCommands : BaseCommandModule
     {
         [Hidden]
-        [Command("setactivity")]
+        [Command("setactivity2")]
         [Description("Sets the bot activity status")]
         // Note that the input is from the console window
         private async Task SetActivity(CommandContext ctx)
