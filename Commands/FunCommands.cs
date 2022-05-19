@@ -138,7 +138,7 @@ namespace DiscordBot_Dasbot.Commands
 
         [Command("poll")]
         [Description("Create a poll for a yes/no question")]
-        [Cooldown(1, 30, CooldownBucketType.Guild)]
+        [Cooldown(2, 30, CooldownBucketType.Guild)]
         public async Task PollMaker(CommandContext ctx, [Description("How long should the poll last?")] TimeSpan duration, [Description("Yes/No Question"), RemainingText] string question)
         {
             var client = ctx.Client;
@@ -152,21 +152,20 @@ namespace DiscordBot_Dasbot.Commands
                     emojiCache = new[]
                     {
                         DiscordEmoji.FromName(client, ":ballot_box_with_check:"),
-                        DiscordEmoji.FromName(client, ":x:")
+                        DiscordEmoji.FromName(client, ":x:"),
                     };
                 }
 
                 // Making the poll and adding the user's question onto it
                 var pollQuestion = new StringBuilder();
-                pollQuestion.Append("**").Append("Poll starting for: ").AppendLine("**");
+                pollQuestion.Append("**").Append("(Not working atm)Poll starting for: ").AppendLine("**");
                 pollQuestion.Append(question);
-                Console.WriteLine("\n1\n");
+
                 var pollStartMsg = await ctx.RespondAsync(pollQuestion.ToString());
-                Console.WriteLine("\n2\n");
 
                 // Collecting the poll results
-                var pollResults = await clientInteractivity.DoPollAsync(pollStartMsg, emojiCache, PollBehaviour.KeepEmojis, duration);
-                Console.WriteLine("\n3\n");
+                var pollResults = await client.GetInteractivity().DoPollAsync(pollStartMsg, emojiCache, PollBehaviour.DeleteEmojis, duration);
+
                 var votesYes = pollResults[0].Total;
                 var votesNo = pollResults[1].Total;
 
