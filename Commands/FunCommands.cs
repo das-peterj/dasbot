@@ -152,7 +152,7 @@ namespace DiscordBot_Dasbot.Commands
                     emojiCache = new[]
                     {
                         DiscordEmoji.FromName(client, ":ballot_box_with_check:"),
-                        DiscordEmoji.FromName(client, ":x:"),
+                        DiscordEmoji.FromName(client, ":x:")
                     };
                 }
 
@@ -231,3 +231,7 @@ namespace DiscordBot_Dasbot.Commands
         */
     }
 }
+
+
+
+
