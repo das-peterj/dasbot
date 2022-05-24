@@ -2,8 +2,6 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
-using DSharpPlus.Interactivity;
-using DSharpPlus.Interactivity.Enums;
 using DSharpPlus.Interactivity.Extensions;
 
 //using MahApps.Metro.Converters;
@@ -138,8 +136,9 @@ namespace DiscordBot_Dasbot.Commands
 
         [Command("poll")]
         [Description("Create a poll for a yes/no question")]
-        [Cooldown(2, 30, CooldownBucketType.Guild)]
-        public async Task PollMaker(CommandContext ctx, [Description("How long should the poll last?")] TimeSpan duration, [Description("Yes/No Question"), RemainingText] string question)
+        public async Task PollMaker(CommandContext ctx,
+            [Description("How long should the poll last?")] TimeSpan duration,
+            [Description("Yes/No Question"), RemainingText] string question)
         {
             var client = ctx.Client;
             var clientInteractivity = client.GetInteractivity();
@@ -163,8 +162,13 @@ namespace DiscordBot_Dasbot.Commands
 
                 var pollStartMsg = await ctx.RespondAsync(pollQuestion.ToString());
 
+                await pollStartMsg.CreateReactionAsync(emojiCache[0]);
+                await pollStartMsg.CreateReactionAsync(emojiCache[1]);
+
+                var pollResults = await clientInteractivity.CollectReactionsAsync(pollStartMsg, duration);
+
                 // Collecting the poll results
-                var pollResults = await client.GetInteractivity().DoPollAsync(pollStartMsg, emojiCache, PollBehaviour.DeleteEmojis, duration);
+                //var pollResults = await client.GetInteractivity().DoPollAsync(pollStartMsg, emojiCache, PollBehaviour.DeleteEmojis, duration);
 
                 var votesYes = pollResults[0].Total;
                 var votesNo = pollResults[1].Total;
@@ -231,7 +235,3 @@ namespace DiscordBot_Dasbot.Commands
         */
     }
 }
-
-
-
-
