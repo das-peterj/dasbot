@@ -7,6 +7,7 @@ using DSharpPlus.Interactivity.Extensions;
 //using MahApps.Metro.Converters;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -138,64 +139,44 @@ namespace DiscordBot_Dasbot.Commands
         [Description("Create a poll for a yes/no question")]
         public async Task PollMaker(CommandContext ctx,
             [Description("How long should the poll last?")] TimeSpan duration,
-            [Description("Yes/No Question"), RemainingText] string question)
+            [Description("What options should people have.")] params DiscordEmoji[] choices)
         {
-            var client = ctx.Client;
-            var clientInteractivity = client.GetInteractivity();
+            var clientInteractivity = ctx.Client.GetInteractivity();
 
-            if (!string.IsNullOrEmpty(question))
+            var promptQuestion = await ctx.Channel.SendMessageAsync("Type your question, must be longer than 5 characters and end with a \"?\" ");
+
+            var msg = await clientInteractivity.WaitForMessageAsync(x => x.Content.Length > 5 && x.Content.Contains("?"));
+            await ctx.Channel.DeleteMessageAsync(promptQuestion);
+
+            if (msg.Result?.Content.ToLowerInvariant() != null)
             {
-                if (emojiCache == null)
+                var pollChoices = choices.Select(emoji => emoji.ToString());
+
+                DateTime foo = DateTime.Now;
+                long unixTime = ((DateTimeOffset)foo).ToUnixTimeSeconds();
+
+                string checkDuration = "<t:" + unixTime + ":R>";
+
+                var embed = new DiscordEmbedBuilder
                 {
-                    Console.Write("\n0\n");
-                    emojiCache = new[]
-                    {
-                        DiscordEmoji.FromName(client, ":ballot_box_with_check:"),
-                        DiscordEmoji.FromName(client, ":x:")
-                    };
+                    Title = msg.Result.Content.ToString(),
+                    Description = string.Join(" ", pollChoices)
+                };
+
+                var pollStartMsg = await ctx.RespondAsync(embed);
+
+                for (int i = 0; i < choices.Length; i++)
+                {
+                    await pollStartMsg.CreateReactionAsync(choices[i]);
                 }
 
-                // Making the poll and adding the user's question onto it
-                var pollQuestion = new StringBuilder();
-                pollQuestion.Append("**").Append("(Not working atm)Poll starting for: ").AppendLine("**");
-                pollQuestion.Append(question);
-
-                var pollStartMsg = await ctx.RespondAsync(pollQuestion.ToString());
-
-                await pollStartMsg.CreateReactionAsync(emojiCache[0]);
-                await pollStartMsg.CreateReactionAsync(emojiCache[1]);
-
+                var countdownTimer = await ctx.Channel.SendMessageAsync(checkDuration);
                 var pollResults = await clientInteractivity.CollectReactionsAsync(pollStartMsg, duration);
 
-                // Collecting the poll results
-                //var pollResults = await client.GetInteractivity().DoPollAsync(pollStartMsg, emojiCache, PollBehaviour.DeleteEmojis, duration);
+                await ctx.Channel.DeleteMessageAsync(countdownTimer);
+                var result = pollResults.Where(emoji => choices.Contains(emoji.Emoji)).Select(emoji => emoji.Emoji + ": " + emoji.Total);
 
-                var votesYes = pollResults[0].Total;
-                var votesNo = pollResults[1].Total;
-
-                var pollResult = new StringBuilder();
-                pollResult.AppendLine(question);
-                pollResult.Append("Poll results are: ");
-                pollResult.Append("**");
-
-                if (votesYes < votesNo)
-                {
-                    pollResult.Append("NO");
-                }
-                else if (votesYes > votesNo)
-                {
-                    pollResult.Append("YES");
-                }
-                else
-                {
-                    pollResult.Append("Equal votes");
-                }
-                pollResult.Append("**");
-                await ctx.RespondAsync(pollResult.ToString());
-            }
-            else
-            {
-                await ctx.RespondAsync("Error: The question can't be empty, stupid");
+                await ctx.Channel.SendMessageAsync(msg.Result.Content.ToString() + "\n" + result.ToString());
             }
         }
 
