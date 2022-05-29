@@ -8,7 +8,6 @@ using DSharpPlus.Interactivity.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DiscordBot_Dasbot.Commands
@@ -176,43 +175,45 @@ namespace DiscordBot_Dasbot.Commands
                 await ctx.Channel.DeleteMessageAsync(countdownTimer);
                 var result = pollResults.Where(emoji => choices.Contains(emoji.Emoji)).Select(emoji => emoji.Emoji + ": " + emoji.Total);
 
+                // Trouble with result.ToString()
                 await ctx.Channel.SendMessageAsync(msg.Result.Content.ToString() + "\n" + result.ToString());
             }
         }
 
-        /*
-         Not currently working for whatever reason
+
         [Command("math")]
         [Description("Gives the user the option too choose which operation too use and what two operands.")]
-        public async Task Math(CommandContext ctx, [Description("Operation to perform on the operands")] MathOperation operation, [Description("First operand")] double num1, [Description("Second operand")] double num2)
+        public async Task MathCommand(CommandContext ctx, [Description("Operator")] string operatorValue, [Description("First operand")] double num1, [Description("Second operand")] double num2)
         {
-            var result = 0.0;
-            switch (operation)
+            double sum = 0;
+            switch (operatorValue.ToLower())
             {
-                case MathOperation.Add:
-                    result = num1 + num2;
+                case "+":
+                    sum = num1 + num2;
                     break;
-
-                case MathOperation.Subtract:
-                    result = num1 - num2;
+                case "-":
+                    sum = num1 - num2;
                     break;
-
-                case MathOperation.Multiply:
-                    result = num1 * num2;
+                case "/":
+                    sum = num1 / num2;
                     break;
-
-                case MathOperation.Divide:
-                    result = num1 / num2;
+                case "*":
+                case "x":
+                    sum = num1 * num2;
                     break;
-
-                case MathOperation.Modulo:
-                    result = num1 % num2;
+                default:
+                    await ctx.Channel.SendMessageAsync($"{operatorValue} is not a valid operator. `+ - / * x` are the only valid ones.");
                     break;
             }
+            Math.Round(sum, 2);
+            string sumAsString = string.Format("{0:0.00}", sum);
+            var embed = new DiscordEmbedBuilder()
+            {
+                Title = "Math operation",
+                Description = $"{num1} {operatorValue} {num2} = {sumAsString}"
+            };
 
-            var emoji = DiscordEmoji.FromName(ctx.Client, ":1234:");
-            await ctx.RespondAsync($"{emoji} The result is {result.ToString("#,##0.00")}");
+            await ctx.Channel.SendMessageAsync(embed);
         }
-        */
     }
 }
