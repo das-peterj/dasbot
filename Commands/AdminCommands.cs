@@ -3,15 +3,8 @@ using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 using System.Threading.Tasks;
-using DSharpPlus;
-using DSharpPlus.CommandsNext;
-using DSharpPlus.CommandsNext.Attributes;
-using DSharpPlus.Entities;
-using DSharpPlus.Interactivity;
 
 namespace DiscordBot_Dasbot.Commands
 {
@@ -46,13 +39,12 @@ namespace DiscordBot_Dasbot.Commands
         {
             var embed = new DiscordEmbedBuilder()
             {
-                Title = "Information regarding " + member.Username + "#" + member.Discriminator,
-                Description = "Account creation date: `" + member.CreationTimestamp.DateTime.ToString(CultureInfo.GetCultureInfo("SE")) + "`\n" +
-                "Joined " + ctx.Guild.Name + " on the `" + member.JoinedAt.DateTime.ToString(CultureInfo.GetCultureInfo("SE")) + "`",
+                Title = $"Information regarding {member.Username}#{member.Discriminator}",
+                Description = $"Account creation date: `{member.CreationTimestamp.DateTime.ToString(CultureInfo.GetCultureInfo("SE"))}`\nJoined {ctx.Guild.Name} on the `{member.JoinedAt.DateTime.ToString(CultureInfo.GetCultureInfo("SE"))}`",
                 Color = DiscordColor.Blurple,
             };
 
-            embed.WithFooter(ctx.Guild.Name + " " + ctx.Channel.Name + " " + DateTime.Now);
+            embed.WithFooter($"{ctx.Guild.Name} {ctx.Channel.Name} {DateTime.Now}");
             embed.WithThumbnail(member.GetAvatarUrl(ImageFormat.Auto));
 
             await ctx.Channel.SendMessageAsync(embed);

@@ -41,7 +41,7 @@ namespace DiscordBot_Dasbot.Commands
             DateTime foo = DateTime.Now;
             long unixTime = ((DateTimeOffset)foo).ToUnixTimeSeconds();
 
-            string timeSinceMsgSent = "<t:" + unixTime + ":R>";
+            string timeSinceMsgSent = $"<t:{unixTime}:R>";
 
             await GatherGuildInfoForComparisionAsync(ctx, guildOne, powerGuildOnePower, amountOfHtmlCharactersGuildOne);
             await GatherGuildInfoForComparisionAsync(ctx, guildTwo, powerGuildTwoPower, amountOfHtmlCharactersGuildTwo);
@@ -496,10 +496,12 @@ namespace DiscordBot_Dasbot.Commands
                 var embedError = new DiscordEmbedBuilder
                 {
                     Title = "Something went wrong",
-                    Description = "1. Double check you used the correct guildtag: " + guildName + ", it's CaSe-SeNsItIvE.\n" +
-                    "2. Check that the website is online and actually displaying values. Sometimes it doesn't work and displays -1 power for each member.\n" +
-                    "You can check it here http://15650.gzidlerpg.appspot.com/web/scores?tid=228310001 , and enter the 3-character Guild Tag (case sensitive).This error might only occur after GW has ended and should only last for approx 1hr.\n" + "\n" +
-                    "If you've checked the above, contact Dasbomber#7777 with details."
+                    Description = $"1. Double check you used the correct guildtag: {guildName}, it's CaSe-SeNsItIvE.\n2. " +
+                    $"Check that the website is online and actually displaying values. " +
+                    $"Sometimes it doesn't work and displays -1 power for each member.\n" +
+                    $"You can check it here http://15650.gzidlerpg.appspot.com/web/scores?tid=228310001 , " +
+                    $"and enter the 3-character Guild Tag (case sensitive).This error might only occur after GW has ended and should only last for approx 1hr." +
+                    $"\n\nIf you've checked the above, contact Dasbomber#7777 with details."
                 };
 
                 await ctx.Channel.SendMessageAsync(embedError);
@@ -603,10 +605,12 @@ namespace DiscordBot_Dasbot.Commands
                 var embedError = new DiscordEmbedBuilder
                 {
                     Title = "Something went wrong",
-                    Description = "1. Double check you used the correct guildtag: " + guildName + ", it's CaSe-SeNsItIvE.\n" +
-                    "2. Check that the website is online and actually displaying values. Sometimes it doesn't work and displays -1 power for each member.\n" +
-                    "You can check it here http://15650.gzidlerpg.appspot.com/web/scores?tid=228310001 , and enter the 3-character Guild Tag (case sensitive). This error might only occur after GW has ended and should only last for approx 1hr.\n" + "\n" +
-                    "If you've checked the above, contact Dasbomber#7777 with details."
+                    Description = $"1. Double check you used the correct guildtag: {guildName}, it's CaSe-SeNsItIvE.\n" +
+                    $"2. Check that the website is online and actually displaying values. " +
+                    $"Sometimes it doesn't work and displays -1 power for each member.\n" +
+                    $"You can check it here http://15650.gzidlerpg.appspot.com/web/scores?tid=228310001 , and enter the 3-character Guild Tag (case sensitive). " +
+                    $"This error might only occur after GW has ended and should only last for approx 1hr.\n\n" +
+                    $"If you've checked the above, contact Dasbomber#7777 with details."
                 };
 
                 await ctx.Channel.SendMessageAsync(embedError);

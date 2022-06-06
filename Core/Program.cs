@@ -1,8 +1,4 @@
-﻿using DiscordBot_Dasbot.Core;
-using DSharpPlus.CommandsNext;
-using System;
-
-namespace DiscordBot_Dasbot
+﻿namespace DiscordBot_Dasbot
 {
     public class Program
     {

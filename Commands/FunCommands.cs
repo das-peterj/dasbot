@@ -19,32 +19,14 @@ namespace DiscordBot_Dasbot.Commands
             "This helps to identify whetever the bot's online and running.")]
         public async Task Ping(CommandContext ctx)
         {
-            //var user = ctx.Member.Username;
-            //await ctx.Channel.SendMessageAsync("Pong! " + user + " your ping is ").ConfigureAwait(false);
 
             DateTime foo = DateTime.Now;
             long unixTime = ((DateTimeOffset)foo).ToUnixTimeSeconds();
 
-            string timeSinceMsgSent = "<t:" + unixTime + ":R>";
+            string timeSinceMsgSent = $"<t:{unixTime}:R>";
 
             var inlineReplyMessage = await new DiscordMessageBuilder()
-            .WithContent("Pong! " + ctx.Client.Ping + "ms" + "\n" + timeSinceMsgSent)
-            .WithReply(ctx.Message.Id, true)
-            .SendAsync(ctx.Channel);
-        }
-
-        [Command("addition")]
-        [Description("Adds two numbers together and outputs the result of the two integers.")]
-        public async Task Addition(CommandContext ctx,
-            [Description("First integer")] int numberOne,
-            [Description("Second integer")] int numberTwo)
-        {
-            //await ctx.Channel.SendMessageAsync(
-            //    numberOne + " + " + numberTwo + " = " + (numberOne + numberTwo).ToString())
-            //    .ConfigureAwait(false);
-
-            var inlineReplyMessage = await new DiscordMessageBuilder()
-            .WithContent(numberOne + " + " + numberTwo + " = " + (numberOne + numberTwo).ToString())
+            .WithContent($"Pong! {ctx.Client.Ping}ms\n{timeSinceMsgSent}")
             .WithReply(ctx.Message.Id, true)
             .SendAsync(ctx.Channel);
         }
@@ -57,9 +39,6 @@ namespace DiscordBot_Dasbot.Commands
             string[] prompt = {"Yes", "No", "Perhaps", "Possibly", "Probably not", "Not likely",
             "Most definitely", "Absolutely", "Dead wrong", "Nah not possible m8", "Absolutely not"};
             int x = rnd.Next(prompt.Length);
-
-            //await ctx.Channel.SendMessageAsync(prompt[x] + ".")
-            //    .ConfigureAwait(false);
 
             var inlineReplyMessage = await new DiscordMessageBuilder()
                 .WithContent(prompt[x] + ".")
@@ -74,11 +53,11 @@ namespace DiscordBot_Dasbot.Commands
             DateTime foo = DateTime.Now;
             long unixTime = ((DateTimeOffset)foo).ToUnixTimeSeconds();
 
-            string timeSinceMsgSent = "<t:" + unixTime + ":R>";
+            string timeSinceMsgSent = $"<t:{unixTime}:R>";
 
             var myButton = new DiscordLinkButtonComponent("https://www.paypal.me/dasbomber", "🥰", false);
             var builder = new DiscordMessageBuilder();
-            builder.WithContent("We appreciate you thinking about supporting us FeelsGoodMan\n" + timeSinceMsgSent).AddComponents(myButton);
+            builder.WithContent($"We appreciate you thinking about supporting us FeelsGoodMan\n{timeSinceMsgSent}").AddComponents(myButton);
 
             await ctx.Channel.SendMessageAsync(builder);
         }
@@ -118,7 +97,7 @@ namespace DiscordBot_Dasbot.Commands
         {
             if (lowerLimit > upperLimit)
             {
-                await ctx.Channel.SendMessageAsync("Error, lowerlimit of " + lowerLimit + " can't be higher than upperLimit of " + upperLimit);
+                await ctx.Channel.SendMessageAsync($"Error, lowerlimit of {lowerLimit} can't be higher than upperLimit of {upperLimit}");
             }
             else
             {
@@ -126,7 +105,7 @@ namespace DiscordBot_Dasbot.Commands
                 int randomNumber = random.Next(lowerLimit, upperLimit + 1); // +1 here because otherwise randomNumber cant ever be equal to upperLimit. Integers n dat
 
                 var inlineReplyMessage = await new DiscordMessageBuilder()
-                    .WithContent("Dice has rolled the number `" + randomNumber + "`. Thanks for playing!")
+                    .WithContent($"Dice has rolled the number `{randomNumber}`. Thanks for playing!")
                     .WithReply(ctx.Message.Id, true)
                     .SendAsync(ctx.Channel);
             }
@@ -154,7 +133,7 @@ namespace DiscordBot_Dasbot.Commands
                 DateTime foo = DateTime.Now;
                 long unixTime = ((DateTimeOffset)foo).ToUnixTimeSeconds();
 
-                string checkDuration = "<t:" + unixTime + ":R>";
+                string checkDuration = $"<t:{unixTime}:R>";
 
                 var embed = new DiscordEmbedBuilder
                 {
@@ -180,10 +159,12 @@ namespace DiscordBot_Dasbot.Commands
             }
         }
 
-
         [Command("math")]
         [Description("Gives the user the option too choose which operation too use and what two operands.")]
-        public async Task MathCommand(CommandContext ctx, [Description("Operator")] string operatorValue, [Description("First operand")] double num1, [Description("Second operand")] double num2)
+        public async Task MathCommand(CommandContext ctx,
+            [Description("Operator")] string operatorValue,
+            [Description("First operand")] double num1,
+            [Description("Second operand")] double num2)
         {
             double sum = 0;
             switch (operatorValue.ToLower())
@@ -191,16 +172,20 @@ namespace DiscordBot_Dasbot.Commands
                 case "+":
                     sum = num1 + num2;
                     break;
+
                 case "-":
                     sum = num1 - num2;
                     break;
+
                 case "/":
                     sum = num1 / num2;
                     break;
+
                 case "*":
                 case "x":
                     sum = num1 * num2;
                     break;
+
                 default:
                     await ctx.Channel.SendMessageAsync($"{operatorValue} is not a valid operator. `+ - / * x` are the only valid ones.");
                     break;
