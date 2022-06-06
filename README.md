@@ -1,6 +1,6 @@
 # Dasbot
 
-Dasbot is an discord bot made with C# and DSharp. Intended to be a fun project made by Peter Jörgensen in which he explores the world of making your very own bot. It's currently online 24/7 on my server https://www.discord.gg/bastion
+Dasbot is an discord bot made with C# and DSharp. Intended to be a fun project made by Peter Jörgensen in which he explores the world of making your very own bot.
 
 The bot's prefix is **%** which is how you communicate with the bot. %help to see all available commands.
 
