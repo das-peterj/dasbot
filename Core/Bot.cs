@@ -58,6 +58,7 @@ namespace DiscordBot_Dasbot
             Commands.RegisterCommands<FunCommands>();
             Commands.RegisterCommands<WebScraperCommands>();
             Commands.RegisterCommands<AdminCommands>();
+            Commands.RegisterCommands<ConverterCommands>();
             Commands.SetHelpFormatter<CustomHelpFormatter>();
             await Client.ConnectAsync();
 

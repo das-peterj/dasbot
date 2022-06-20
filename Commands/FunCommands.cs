@@ -154,8 +154,7 @@ namespace DiscordBot_Dasbot.Commands
                 await ctx.Channel.DeleteMessageAsync(countdownTimer);
                 var result = pollResults.Where(emoji => choices.Contains(emoji.Emoji)).Select(emoji => emoji.Emoji + ": " + emoji.Total);
 
-                // Trouble with result.ToString()
-                await ctx.Channel.SendMessageAsync(msg.Result.Content.ToString() + "\n" + result.ToString());
+                await ctx.Channel.SendMessageAsync("Poll Results!\n\nQuestion: "+msg.Result.Content.ToString() + "\nResult: " + result);
             }
         }
 

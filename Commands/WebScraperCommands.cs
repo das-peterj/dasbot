@@ -511,7 +511,6 @@ namespace DiscordBot_Dasbot.Commands
         public async Task GatherGuildInfoForComparisionAsync(CommandContext ctx, string guildName, double[] guildPower, int amountOfHtmlCharacters)
         {
             var html = @"http://15650.gzidlerpg.appspot.com/web/scores?tid=220110001&guildTag=" + guildName;
-            //Console.WriteLine(html);
             HtmlWeb web = new HtmlWeb();
 
             LoadGuildInfo(guildName, ctx);
@@ -532,7 +531,6 @@ namespace DiscordBot_Dasbot.Commands
                 {
                     amountOfHtmlCharactersLocal++;
                 }
-                //Console.WriteLine("Amount of guild members " + amountOfHtmlCharacters);
 
                 if (!hasRanCheckForGuildOne)
                 {
