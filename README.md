@@ -1,5 +1,7 @@
 # Dasbot
 
+# //!! As of 2022-11-14, the bot is no longer being developed. Reason being is that I'm no longer playing the game which the bot is based on. !!\\
+
 Dasbot is an discord bot made with C# and DSharp. Intended to be a fun project made by Peter Jörgensen in which he explores the world of making your very own bot.
 
 The bot's prefix is **%** which is how you communicate with the bot. %help to see all available commands.
@@ -53,5 +55,5 @@ The data that was pulled earlier will now be sent to a remote Google Sheets file
 [DSharp](https://github.com/DSharpPlus/DSharpPlus) (The Discord API used for Dasbot)
 
   
-Last updated: 2022-05-12
+Last updated: 2022-11-14
 
